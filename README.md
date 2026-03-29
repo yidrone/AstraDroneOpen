@@ -61,20 +61,14 @@ AstraDroneOpen/
 │
 ├── scripts/                         # 工具与自动化脚本（优先使用 .bin 可执行）
 │   ├── build_AstraDrone_ros1.bin    # ROS1 一键构建（含依赖检查）
-│   ├── build_AstraDrone_ros1.sh     # 上述等价脚本（便于阅读修改）
 │   ├── build_sim_workspace.bin      # 仿真一键构建
-│   ├── build_sim_workspace.sh
 │   ├── pc_installer.bin             # PC 端环境一键安装器
-│   ├── pc_installer.sh
 │   ├── onboard_installer.bin        # 机载端环境一键安装器
-│   ├── onboard_installer.sh
 │   ├── shc.sh                       # shell 可执行封装/加固
 │   ├── env_sh/                      # 环境初始化与依赖管理
 │   │   ├── 00_env_ubuntu_init.sh    # 基础系统/源/工具链
 │   │   ├── 01_env_px4_init.sh       # PX4/FlightStack 相关
 │   │   ├── 02_env_third_party_init.sh # 第三方库批量安装
-│   │   ├── checkout_cmake_versions.sh # CMake 版本更换脚本
-│   │   ├── cmake-install.sh         # CMake 自编译安装
 │   │   └── ignore_packages.sh       # colcon/catkin 忽略清单生成
 │   └── run_sh/                      # 运行与演示脚本
 │       ├── echo.sh                  # 终端打印示例/环境验证
@@ -107,7 +101,6 @@ AstraDroneOpen/
 │   ├── Livox-SDK2/                  # Livox 雷达 SDK（v2）
 │   ├── lulese_aruco3.1.15/          # ArUco 标定/标记库
 │   ├── nlopt/                       # 非线性优化库（轨迹/控制可用）
-│   └── opencv-3.4.8/                # OpenCV 固定版本（兼容性验证）
 │
 ├── LICENSE                          # 开源许可证
 ├── README.md                        # 顶层说明（快速开始/目录索引/FAQ）
@@ -122,7 +115,7 @@ AstraDroneOpen/
 #### 2.1.1 克隆项目
 
 ```bash
-cd ~/ && git clone https://gitee.com/lulese/AstraDroneOpen.git  #配置px4环境需要配置github上网环境
+cd ~/ && git clone https://github.com/yidrone/AstraDroneOpen.git  #配置px4环境需要配置github上网环境
 ```
 > wget https://down.clashchinese.com/soft/clashchinese.com_Clash.for.Windows-0.20.39-x64-linux.tar.gz
 >
@@ -162,15 +155,15 @@ cd ~/AstraDroneOpen/
 
 ![](./media/image/pc_example.png)
 
-### 2.2 机载电脑快速启动
+### 2.2 机载电脑快速启动（还未完善）
 
 #### 2.1.1 克隆项目
 
 ```bash
-cd ~/ && git clone https://gitee.com/lulese/AstraDroneOpen.git
+cd ~/ && git clone https://github.com/yidrone/AstraDroneOpen.git
 ```
 
-#### 2.1.2 编译项目（还未完善）
+#### 2.1.2 编译项目
 
 本项目提供了众多编译的脚本，包括`00_env_ubuntu_init.sh`、`01_env_px4_init.sh`、`02_env_third_party_init.sh`为基本环境配置脚本，主要安装了ros noetic，code ，px4 ，编译ros工作空间所需的第三方库。`build_AstraDrone_ros1.bin`、`build_sim_workspace.bin`为工作空间的编译脚本，这两个脚本会删除原有的编译文件，重新编译，所以编译比较费时，推荐在第一次编译时使用。
 

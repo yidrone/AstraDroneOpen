@@ -1,5 +1,0 @@
-bool enable
-float32[] data_param
----
-bool success
-string message

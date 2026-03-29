@@ -1,6 +1,0 @@
-/exploration_node/sdf_map/box_min_x: 0.0
-/exploration_node/sdf_map/box_min_y: -10.0
-/exploration_node/sdf_map/box_min_z: -0.3
-/exploration_node/sdf_map/box_max_x: 50.0
-/exploration_node/sdf_map/box_max_y: 15.0
-/exploration_node/sdf_map/box_max_z: 3.0

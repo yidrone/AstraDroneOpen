@@ -2,16 +2,6 @@
 
 本目录包含若干通过 `tmux` 启动的脚本，方便一次性拉起演示、示例或录制所需的 ROS 节点。每个脚本都会先结束同名的 tmux 会话，然后按预设的分屏布局启动相关命令。概览如下：
 
-## 脚本作用
-
-- **demonstration.sh**：分成 6 个窗格，依次启动 `roscore`、PX4 MAVROS、Livox 驱动、Fast-LIO、探索管理器和 RViz，完成完整演示流程。
-- **demonstration_control.sh**：分成 8 个窗格，启动 `roscore`、MAVROS、Livox 驱动、Fast-LIO、CSI 摄像头、astra_control 实机控制、RealSense 摄像头以及 rqt 等工具，适合实机控制演示。
-- **echo.sh**：分成 4 个窗格，分别 `rostopic echo` 常用的 MAVROS 位姿、状态和期望位置话题，便于快速观察状态。
-- **onboard_example.sh**：分成 6 个窗格，串行启动 `roscore`、MAVROS、Livox 驱动、Fast-LIO、CSI 摄像头和 RealSense 摄像头，用于机载示例流程。
-- **pc_example.sh**：分成 5 个窗格，启动 `roscore`、PX4 仿真示例、Fast-LIO（关闭 RViz）、offboard 自动控制以及 QGroundControl 客户端，适合 PC 端示例。
-- **record.sh**：在单窗格中进入 `~/bag` 目录并执行 `rosbag record`，录制相机、雷达、MAVROS 等主要话题。
-- **test.sh**：分成 4 个窗格，启动 `roscore`、MAVROS、Livox 驱动和 Fast-LIO，便于基本功能联调测试。
-
 ## tmux 简介
 
 `tmux` 是一款终端复用器，可在一个终端中创建多个会话、窗口和窗格，支持分屏、后台运行和会话恢复，适合管理多进程或长时间运行的任务。

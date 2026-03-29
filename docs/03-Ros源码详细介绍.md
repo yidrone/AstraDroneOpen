@@ -292,8 +292,6 @@ def draw_markers(self):
 
 提供了许多的通用工具以及相应的驱动、SDK。
 
-`C10Pro_sdk`：适用于云卓网络三轴云台相机系列产品。提供了相应的产品的SDK。
-
 `camera_sdk`：提供了一个基本的相机SDK。支持多种种类的RGB相机。
 
 `catkin_simple`：`catkin_simple` 是一个旨在简化 ROS `catkin` 软件包 `CMakeLists.txt` 文件编写的工具。它通过一系列自定义宏，减少了样板代码，使构建配置更加简洁。自动处理依赖、自动包含路径、自动生成消息、服务、动作、自动处理动态重配置。

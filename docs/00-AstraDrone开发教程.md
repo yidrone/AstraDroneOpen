@@ -61,7 +61,7 @@ AstraDrone 采用典型的无人机分层架构：
 
    ```terminal
    cd ~/AstraDroneOpen/ && sudo chmod 777 ~/AstraDroneOpen/scripts/*
-   ./scripts/pc_installer.sh
+   ./scripts/pc_installer_x86.bin
    ```
 
    注意，在运行本脚本时一定要注意输入密码以授予sudo权限。
