@@ -1,0 +1,42 @@
+<?xml version='1.0'?>
+<sdf version='1.4'>
+  <model name="apriltag_board_v2_4">
+    <link name='link'>
+      <pose>0 0 0.01 0 0 1.57</pose>
+      <inertial>
+        <mass>1.00</mass>
+        <inertia>
+          <ixx>0.58</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.58</iyy>
+          <iyz>0</iyz>
+          <izz>0.19</izz>
+        </inertia>
+      </inertial>
+      <collision name='collision'>
+        <geometry>
+                <box>
+                  <size>0.6 0.6 .005</size>
+                </box>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+                <box>
+                  <size>0.6 0.6 .005</size>
+                </box>
+        </geometry>
+
+        <material>
+          <script>
+            <uri>model://apriltag_board_v2_4/materials/scripts</uri>
+            <uri>model://apriltag_board_v2_4/materials/textures</uri>
+            <name>Mark/apriltag_board_v2_4</name>
+          </script>
+        </material>
+      </visual>
+    </link>     
+  </model>
+</sdf>

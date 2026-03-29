@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+  <!-- Launch static transform publishers T = 50ms --> 
+  <node pkg="tf" type="static_transform_publisher" name="tf_baseLink_camera"
+        args="0 0 0 -1.5708 0 3.1415 base_link camera 50"/>
+
+  <!-- aruco detect -->
+  <node pkg="aruco_localization" type="aruco_localization" name="aruco" output="screen">
+    <param name="k_SW2Real" value="1.8" />
+
+    <param name="show_output_video" value="true" />
+    <param name="markermap_config" value="$(find aruco_localization)/params/aruco_board_meter_v2_1.yaml" />  
+    <param name="calibration_file" value="$(find aruco_localization)/camera_info/sim_cam.yaml" />
+    <param name="debug_save_input_frames" value="false" />
+    <param name="debug_save_output_frames" value="false" />
+    <param name="debug_image_path" value="/tmp/arucoimages" />
+
+    <remap from="input_image" to="/iris_mid360/camera/rgb/image_raw" />
+    <!-- <remap from="input_image" to="/camera/image_raw" /> -->
+
+    <remap from="output_image" to="aruco/image" />
+  </node>
+
+  <!-- kalman filter -->
+  <!-- LKF -->
+  <!-- <node pkg="target_prediction" type="kalman_filter" name="LKF" output="screen">
+    <param name="prediction_time" value="1.5" />
+    <param name="debug_hz" value="40" />
+  </node> -->
+  
+  <!-- EKF -->
+  <node name="EKF" pkg="target_prediction" type="EKF_prediction.py" output="screen">
+    <param name="predicted_time" value="1.2" />
+  </node>
+
+</launch>
+

@@ -1,0 +1,14 @@
+
+material UrbanTile/Coral01_Diffuse
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture Coral01_Albedo.png
+        }
+      }
+    }
+  }

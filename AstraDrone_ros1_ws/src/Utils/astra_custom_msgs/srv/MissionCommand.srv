@@ -1,0 +1,10 @@
+# 请求部分
+uint8 command
+uint8 CMD_TAKEOFF=1
+uint8 CMD_LAND=2
+uint8 CMD_ABORT=3
+float32 altitude  # 仅用于起飞命令
+---
+# 响应部分
+bool success
+string message

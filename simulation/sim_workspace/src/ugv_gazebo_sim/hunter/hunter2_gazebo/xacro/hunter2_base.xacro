@@ -1,0 +1,817 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-1-g15f4949  Build Version: 1.6.7594.29634
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+
+<robot name="hunter2" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find hunter2_base)/urdf/inertials.xacro"/>
+  <!-- <xacro:include filename="$(find hunter2_gazebo)/xacro/hunter2.gazebo"/> -->
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-0.000409203500587652 0.0266989327622036 -0.135901124750884"
+        rpy="0 0 0" />
+      <mass
+        value="6.02945169536679" />
+      <inertia
+        ixx="0.111072002332438"
+        ixy="1.01315049006049E-06"
+        ixz="5.1330815060685E-07"
+        iyy="0.0332370959804736"
+        iyz="-0.00188859201421113"
+        izz="0.126608628092831" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://hunter2_base/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://hunter2_base/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+
+  <link  name="wheel_1">
+    <inertial>
+      <origin
+        xyz="0.00978237547166959 -8.65419720825766E-05 -7.42586864017625E-05"
+        rpy="0 0 0" />
+      <mass
+        value="4.71327697475564" />
+      <inertia
+        ixx="0.110728822762987"
+        ixy="-2.65377659117968E-08"
+        ixz="-5.98702902432139E-08"
+        iyy="0.0637297556516867"
+        iyz="2.53851903686626E-07"
+        izz="0.0637296696516031" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://hunter2_base/meshes/wheel_1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://hunter2_base/meshes/wheel_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="wheel_joint1"
+    type="continuous">
+    <origin
+      xyz="0.29251 -0.28018 -0.19558"
+      rpy="3.1416 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="wheel_1" />
+    <axis
+      xyz="-1 0 0" />
+    <limit
+      effort="100"
+      velocity="10" />
+  </joint>
+
+  <transmission name="wheel_1_transmission" type="SimpleTransmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="wheel_joint1">
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="wheel_joint1_motor">
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+
+  <link
+    name="wheel_2">
+    <inertial>
+      <origin
+        xyz="-0.00964956365974079 8.6329860792822E-05 -7.44774777288182E-05"
+        rpy="0 0 0" />
+      <mass
+        value="4.66742996421699" />
+      <inertia
+        ixx="0.110667759992375"
+        ixy="-2.63802564843945E-08"
+        ixz="5.99336855198675E-08"
+        iyy="0.0636984867097631"
+        iyz="-2.54196572378095E-07"
+        izz="0.0636984028675039" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://hunter2_base/meshes/wheel_2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://hunter2_base/meshes/wheel_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="wheel_joint2"
+    type="continuous">
+    <origin
+      xyz="-0.29249 -0.28 -0.19558"
+      rpy="3.1416 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="wheel_2" />
+    <axis
+      xyz="-1 0 0" />
+    <limit
+      effort="100"
+      velocity="10" />
+  </joint>
+
+  <transmission name="wheel_2_transmission" type="SimpleTransmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="wheel_joint2">
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="wheel_joint2_motor">
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+
+  <link
+    name="wheel_3_steering">
+    <inertial>
+      <origin
+        xyz="0.00953558091414307 8.97223711299189E-08 -1.10401905062396E-07"
+        rpy="0 0 0" />
+      <mass
+        value="4.66605935969484" />
+      <inertia
+        ixx="0.110665549547643"
+        ixy="2.01586324920486E-08"
+        ixz="-6.47208331648567E-08"
+        iyy="0.0636957399203434"
+        iyz="-6.38915848093281E-08"
+        izz="0.0636957626339037" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+      <box size="0.01 0.01 0.01" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+      <box size="0.01 0.01 0.01" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="wheel_joint3_steering"
+    type="revolute">
+    <origin
+      xyz="0.29201 0.37142 -0.1955"
+      rpy="3.1416 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="wheel_3_steering" />
+    <axis
+      xyz="0 0 -1" />
+    <limit lower="-0.7" upper="0.7" effort="10" velocity="100" />
+  </joint>
+
+  <transmission name="wheel_3_steering_transmission" type="SimpleTransmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="wheel_joint3_steering">
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="wheel_joint3_steering_motor">
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+
+
+  <link
+    name="wheel_3">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="4.66605935969484" />
+      <inertia
+        ixx="0.110665549547643"
+        ixy="2.01586324920486E-08"
+        ixz="-6.47208331648567E-08"
+        iyy="0.0636957399203434"
+        iyz="-6.38915848093281E-08"
+        izz="0.0636957626339037" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://hunter2_base/meshes/wheel_3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://hunter2_base/meshes/wheel_3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="wheel_joint3"
+    type="continuous">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="wheel_3_steering" />
+    <child
+      link="wheel_3" />
+    <axis
+      xyz="-1 0 0" />
+    <limit
+      effort="100"
+      velocity="10" />
+  </joint>
+
+  <transmission name="wheel_3_transmission" type="SimpleTransmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="wheel_joint3">
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="wheel_joint3_motor">
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+
+
+  <link
+    name="wheel_4_steering">
+    <inertial>
+      <origin
+        xyz="-0.00963857978619287 6.57740841719656E-06 -2.02422909173494E-05"
+        rpy="0 0 0" />
+      <mass
+        value="4.70067501686096" />
+      <inertia
+        ixx="0.110719826409029"
+        ixy="-2.27533371872637E-07"
+        ixz="4.88001911281042E-08"
+        iyy="0.0637235055294589"
+        iyz="-3.8745412528399E-08"
+        izz="0.0637236095696399" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+      <box size="0.01 0.01 0.01" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+      <box size="0.01 0.01 0.01" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="wheel_joint4_steering"
+    type="revolute">
+    <origin
+      xyz="-0.29199 0.37142 -0.1955"
+      rpy="3.1416 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="wheel_4_steering" />
+    <axis
+      xyz="0 0 -1" />
+    <limit lower="-0.7" upper="0.7" effort="10" velocity="100" />
+  </joint>
+
+
+  <transmission name="wheel_4_steering_transmission" type="SimpleTransmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="wheel_joint4_steering">
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="wheel_joint4_steering_motor">
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+
+
+  <link
+    name="wheel_4">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="4.70067501686096" />
+      <inertia
+        ixx="0.110719826409029"
+        ixy="-2.27533371872637E-07"
+        ixz="4.88001911281042E-08"
+        iyy="0.0637235055294589"
+        iyz="-3.8745412528399E-08"
+        izz="0.0637236095696399" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://hunter2_base/meshes/wheel_4.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://hunter2_base/meshes/wheel_4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="wheel_joint4"
+    type="continuous">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="wheel_4_steering" />
+    <child
+      link="wheel_4" />
+    <axis
+      xyz="-1 0 0" />
+    <limit
+      effort="100"
+      velocity="10" />
+  </joint>
+
+
+  <transmission name="wheel_4_transmission" type="SimpleTransmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="wheel_joint4">
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="wheel_joint4_motor">
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+
+  <xacro:property name="wheel_radius" value="0.01" />
+  <xacro:property name="wheel_thickness" value="0.08" />
+  <xacro:property name="wheel_mass" value="1" />
+
+    <link name="rear_wheel_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_thickness}"/>
+        </geometry>
+        <material name="yellow" />
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_thickness}"/>
+        </geometry>
+      </collision>
+      <xacro:solid_cylinder_inertial 
+          rpy="0 0 0" xyz="0 0 0"
+          mass="${wheel_mass}"
+          radius="${wheel_radius}" length="${wheel_thickness}" />
+    </link>
+
+    <joint name="rear_wheel_joint" type="continuous">
+      <parent link="base_link"/>
+      <child link="rear_wheel_link"/>
+      <origin  xyz="-0.000409203500587652 -0.35  -0.135901124750884"  rpy="0 0 0" />
+      <axis xyz="0 0 1"/>
+      <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="0"
+      velocity="0" />
+    </joint>
+
+    <transmission name="rear_wheel_joint_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <actuator name="rear_wheel_joint_motor">
+        <mechanicalReduction>1</mechanicalReduction>
+        <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      </actuator>
+      <joint name="rear_wheel_joint">
+        <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      </joint>
+    </transmission>
+
+        <link name="front_wheel_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_thickness}"/>
+        </geometry>
+        <material name="yellow" />
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_thickness}"/>
+        </geometry>
+      </collision>
+      <xacro:solid_cylinder_inertial 
+          rpy="0 0 0" xyz="0 0 0"
+          mass="${wheel_mass}"
+          radius="${wheel_radius}" length="${wheel_thickness}" />
+    </link>
+
+    <joint name="front_steer_joint" type="continuous">
+      <parent link="base_link"/>
+      <child link="front_wheel_link"/>
+      <origin  xyz="-0.000409203500587652 0.4 -0.135901124750884"  rpy="0 0 0" />
+      <axis xyz="0 0 1"/>
+      <limit
+      lower="-0.72"
+      upper="0.72"
+      effort="0"
+      velocity="0" />
+    </joint>
+
+    <transmission name="front_steer_joint_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <actuator name="front_steer_joint_motor">
+        <mechanicalReduction>1</mechanicalReduction>
+        <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      </actuator>
+      <joint name="front_steer_joint">
+        <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      </joint>
+    </transmission> 
+
+
+  <joint name="steering_gear_1_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="steering_gear_1_link"/>
+    <origin xyz="-0.1 0.0 0.5" rpy="0 0 0"/>
+  </joint>
+
+  <link
+    name="steering_gear_1_link">
+    <inertial>
+      <origin
+        xyz="0.00359638015135648 -0.000379875233127713 0.0145072443773626"
+        rpy="0 0 0" />
+      <mass
+        value="0.001" />
+      <inertia
+        ixx="4.91479288608741E-05"
+        ixy="-9.94504456334803E-13"
+        ixz="-1.18860548321916E-06"
+        iyy="2.15613270914037E-05"
+        iyz="-1.69011842238603E-07"
+        izz="4.81596009383514E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_degree_platform/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.2 0.2 0.2 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_degree_platform/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+    <dynamic damping="0.7" friction="0.5"/>
+  </link>
+
+ <link
+    name="steering_gear_2_link">
+    <inertial>
+      <origin
+        xyz="-0.000451886556456518 0.0038421620877799 0.0217267806896146"
+        rpy="0 0 0" />
+      <mass
+        value="0.001" />
+      <inertia
+        ixx="4.65491008108007E-06"
+        ixy="4.32541508067955E-11"
+        ixz="5.82253120679287E-08"
+        iyy="4.05857918132744E-06"
+        iyz="2.7475382716064E-08"
+        izz="2.34864008475162E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_degree_platform/meshes/link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_degree_platform/meshes/link1.STL" />
+      </geometry>
+    </collision>
+    <dynamic damping="0.7" friction="0.5"/>
+  </link>
+  
+
+  <joint
+    name="steering_gear_2_joint"
+    type="continuous">
+    <origin
+      xyz="0.0018683 0.0093 0.0615"
+      rpy="0 0 -0.11271" />
+    <parent
+      link="steering_gear_1_link" />
+    <child
+      link="steering_gear_2_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+
+  <link
+    name="platform_1_link">
+    <inertial>
+      <origin
+        xyz="1.06897823926033E-12 -0.0274897014708804 0.0134940267476799"
+        rpy="0 0 0" />
+      <mass
+        value="0.001" />
+      <inertia
+        ixx="2.65135727351373E-06"
+        ixy="6.48509600241574E-22"
+        ixz="-8.20563167652603E-22"
+        iyy="6.96938113125332E-07"
+        iyz="-3.42783645841975E-21"
+        izz="2.30728628291268E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_degree_platform/meshes/link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_degree_platform/meshes/link2.STL" />
+      </geometry>
+    </collision>
+    <dynamic damping="0.7" friction="0.5"/>
+  </link>
+  <joint
+    name="platform_1_joint"
+    type="continuous">
+    <origin
+      xyz="-0.00079267 0.029192 0.03487"
+      rpy="0 -0.1988 0" />
+    <parent
+      link="steering_gear_2_link" />
+    <child
+      link="platform_1_link" />
+    <axis
+      xyz="0 -1 0" />
+  </joint>
+
+ <link
+    name="platform_2_link">
+    <inertial>
+      <origin
+        xyz="1.02695629777827E-14 1.01363362148277E-12 -0.0149291851817156"
+        rpy="0 0 0" />
+      <mass
+        value="0.000001" />
+      <inertia
+        ixx="0.155943555803937"
+        ixy="-2.42861286636753E-17"
+        ixz="8.02309607639273E-18"
+        iyy="0.155943555803937"
+        iyz="6.93889390390723E-18"
+        izz="0.310773464453391" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_degree_platform/meshes/plat_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_degree_platform/meshes/plat_link.STL" />
+      </geometry>
+    </collision>
+    <dynamic damping="0.7" friction="0.5"/>
+  </link>
+  <joint
+    name="platform_2_joint"
+    type="fixed">
+    <origin
+      xyz="0 -0.0278 0.057"
+      rpy="0 0 -1.5708" />
+    <parent
+      link="platform_1_link" />
+    <child
+      link="platform_2_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<gazebo>
+  <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+    <!-- <robotNamespace>/hunter2</robotNamespace> -->
+    <!-- <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType> -->
+          <robotSimType>steer_bot_hardware_gazebo/SteerBotHardwareGazebo</robotSimType>
+    <legacyModeNS>false</legacyModeNS>
+  </plugin>
+</gazebo>
+
+  <!-- <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotSimType>steer_bot_hardware_gazebo/SteerBotHardwareGazebo</robotSimType>
+      <legacyModeNS>false</legacyModeNS>
+    </plugin>
+  </gazebo> -->
+   <!-- <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/hunter2</robotNamespace>
+      <robotSimType>steer_bot_hardware_gazebo/SteerBotHardwareGazebo</robotSimType>
+      <legacyModeNS>false</legacyModeNS>
+    </plugin>
+  </gazebo>  -->
+</robot>

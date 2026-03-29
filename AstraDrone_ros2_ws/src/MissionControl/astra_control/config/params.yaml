@@ -1,0 +1,33 @@
+/**:
+  ros__parameters:
+    # 开关参数
+    switch:
+      flag_planner_px4: 1
+      flag_landing_detect: 0
+      auto_land: 0
+
+    # 阈值参数
+    threshould:
+      takeoff_threshould: 0.3
+      planner_min_pub_threshould: 0.02
+      waypoint_threshould: 0.3
+      aligning_threshould: 0.15
+      landing_threshould: 0.15
+      arrive_yaw_threshould: 0.3
+      times_detect_threshould: 30
+      waypoint_adjust_max_second_threshould: 10.0
+      land_adjust_max_second_threshould: 10.0
+
+    # 其他参数
+    land_height: 0.5
+    px4_max_distance: 1.2
+    max_yaw_change: 0.3
+    debug: false
+
+    # 航路点 - 使用字符串数组格式
+    waypoints:
+      - "x:0.0,y:0.0,z:2.0,yaw:0.0,pointmode:Nothing_point"
+      - "x:5.0,y:0.0,z:2.0,yaw:90.0,pointmode:Detect_point"
+      - "x:8.0,y:0.0,z:2.0,yaw:90.0,pointmode:Detect_point"
+      - "x:3.0,y:0.0,z:2.0,yaw:90.0,pointmode:Detect_point"
+      - "x:0.0,y:0.0,z:1.0,yaw:90.0,pointmode:Land_point"

@@ -1,0 +1,3 @@
+<launch>
+  <node name="rc_topic" pkg="rc_topic" type="rc_topic.py" output="screen"/>
+</launch>

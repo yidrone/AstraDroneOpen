@@ -1,0 +1,10 @@
+<launch>
+    <!-- 启动节点 -->
+    <node name="pixel2map" pkg="pixel2map" type="pixel2map" output="screen">
+        <!-- 参数配置 -->
+        <param name="camera_params_file" value="$(find pixel2map)/config/camera_params.yaml" />
+        <param name="result_topic" value="/yolov10_predict_node/rgb/result" />
+        <param name="base_frame" value="base_link" />
+        <param name="world_frame" value="world" />
+    </node>
+</launch>

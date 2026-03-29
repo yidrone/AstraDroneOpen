@@ -1,0 +1,6 @@
+<launch>
+  <!-- 加载参数文件：修改 config/rc_obstacle_avoidance.yaml 后直接重启本节点即可生效 -->
+  <rosparam command="load" file="$(find rc_obstacle_avoidance)/config/rc_obstacle_avoidance.yaml" />
+
+  <node pkg="rc_obstacle_avoidance" type="rc_obstacle_avoidance_node" name="rc_obstacle_avoidance" output="screen" />
+</launch>

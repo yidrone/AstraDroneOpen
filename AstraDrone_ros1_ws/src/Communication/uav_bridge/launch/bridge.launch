@@ -1,0 +1,18 @@
+<launch>
+    <arg name="script_pos" default="/home/simulation/AstraDroneOpen/scripts/run_sh/" />
+    <arg name="waypoint_yaml" default="$(find astra_control)/config/astra_real.yaml" />
+
+    <node pkg="uav_bridge" type="tcp_link_node" name="tcp_link_node" output="screen">
+        <param name="port" value="9527" />
+    </node>
+
+    <node pkg="uav_bridge" type="state_packer_node" name="state_packer_node" output="screen" />
+    
+    <node pkg="uav_bridge" type="command_parser_node" name="command_parser_node" output="screen">
+        <param name="script_path" value="$(arg script_pos)" />
+        <param name="yaml_path"   value="$(arg waypoint_yaml)" />
+    </node>
+
+    <node pkg="uav_bridge" type="px4_unlocker_node" name="px4_unlocker_node" output="screen" />
+
+</launch>

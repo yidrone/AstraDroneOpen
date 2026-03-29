@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<launch> 
+
+    <arg name="rviz" default="true" />
+
+    <!-- square  or  circle-->
+    <param name="flight_mode" value="circle" />
+    <!-- 启动节点，type参数是可执行文件的名字，name 随便写 -->
+    <node pkg="offboard" type="autoarming_control" name="autoarming_control" output="screen">
+        <param name="hight" value="5.0" />
+        <remap from="/mavros/state" to="/uav0/mavros/state" />
+        <remap from="/mavros/local_position/pose" to="/uav0/mavros/local_position/pose" />
+        <remap from="/mavros/setpoint_position/local" to="/uav0/mavros/setpoint_position/local" />
+        <remap from="/mavros/set_mode" to="/uav0/mavros/set_mode" />
+        <remap from="/mavros/cmd/arming" to="/uav0/mavros/cmd/arming" />
+    </node>
+
+    <node pkg="offboard" type="autoarming_control" name="autoarming_control" output="screen">
+        <param name="hight" value="6.0" />
+        <remap from="/mavros/state" to="/uav1/mavros/state" />
+        <remap from="/mavros/local_position/pose" to="/uav1/mavros/local_position/pose" />
+        <remap from="/mavros/setpoint_position/local" to="/uav1/mavros/setpoint_position/local" />
+        <remap from="/mavros/set_mode" to="/uav1/mavros/set_mode" />
+        <remap from="/mavros/cmd/arming" to="/uav1/mavros/cmd/arming" />
+    </node>
+
+    <node pkg="offboard" type="autoarming_control" name="autoarming_control" output="screen">
+        <param name="hight" value="7.0" />
+        <remap from="/mavros/state" to="/uav2/mavros/state" />
+        <remap from="/mavros/local_position/pose" to="/uav2/mavros/local_position/pose" />
+        <remap from="/mavros/setpoint_position/local" to="/uav2/mavros/setpoint_position/local" />
+        <remap from="/mavros/set_mode" to="/uav2/mavros/set_mode" />
+        <remap from="/mavros/cmd/arming" to="/uav2/mavros/cmd/arming" />
+    </node>
+
+    <!-- 可视化 -->
+    <group if="$(arg rviz)">
+        <node launch-prefix="nice" pkg="rviz" type="rviz" name="rviz_a_loam" args="-d $(find offboard)/rviz_config/drone_path.rviz" />
+    </group>
+
+</launch>

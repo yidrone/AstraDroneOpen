@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="x_pos" default="2.0"/>
+  <arg name="y_pos" default="0.0"/>
+  <arg name="z_pos" default="0.0"/>
+
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="paused" value="false"/>
+        <arg name="use_sim_time" value="true"/>
+        <arg name="gui" value="true"/>
+        <arg name="headless" value="false"/>
+        <arg name="debug" value="false"/>
+
+  </include>
+
+
+  <include file="$(find hunter2_control)/launch/hunter2_v_contol.launch" />
+
+  <param name="robot_description" command="$(find xacro)/xacro '$(find hunter2_base)/urdf/hunter2_base_gazebo.xacro'" />
+
+
+  <!-- push robot_description to factory and spawn robot in gazebo -->
+  <node name="hunter_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" args="-urdf -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description -model hunter2_base -z 1.5"
+    respawn="false" />
+
+  <rosparam file="$(find hunter2_base)/config/turtlebot3_platform.yaml" command="load"/>
+ 
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+	output="screen" ns="/two_degree_platform" args="joint_state_controller joint1_position_controller joint2_position_controller"/>
+
+
+  <node name="robot_state_publisher_platform" pkg="robot_state_publisher" type="robot_state_publisher"
+	respawn="false" output="screen">
+      <remap from="/joint_states" to="/two_degree_platform/joint_states" />
+  </node>
+
+  </launch>
+

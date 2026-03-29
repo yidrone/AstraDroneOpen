@@ -1,0 +1,13 @@
+<launch>
+    <arg name="rtsp_server" default="127.0.0.1" />
+    <arg name="camera_topic" default="/camera/image_raw" />
+
+    <node pkg="uav_bridge" type="rtsp_sender_node" name="rtsp_sender_node" output="screen">
+        <param name="topic_input" value="$(arg camera_topic)" />
+        <param name="rtsp_url"    value="rtsp://$(arg rtsp_server):8554/live_stream" />
+        <param name="fps"         value="30" />
+        <param name="width"       value="1920" />
+        <param name="height"      value="1080" />
+        <param name="bitrate"     value="4000000" />
+    </node>
+</launch>

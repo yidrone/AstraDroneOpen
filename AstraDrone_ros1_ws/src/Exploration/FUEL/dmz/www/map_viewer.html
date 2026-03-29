@@ -1,0 +1,556 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover"/>
+  <title>地图</title>
+
+  <style>
+    :root{
+      --bg:#0f0f10; --fg:#eaeaea; --line:#2a2a2a; --bar:#161616;
+      --navH:64px; --safeB: env(safe-area-inset-bottom, 0px);
+      --focus:#4da3ff;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--fg);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto;
+      overflow:hidden;
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    /* 顶部控制条 */
+    #top{
+      position:fixed; left:0; right:0; top:0;
+      height:52px;
+      background:var(--bar);
+      border-bottom:1px solid var(--line);
+      display:flex; gap:8px; align-items:center;
+      padding:8px;
+      z-index:9999;
+      transform: translateZ(0);
+      will-change: transform;
+      pointer-events:auto;
+    }
+    #top select,#top button,#top input{
+      font-size:14px;
+      padding:8px 10px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#111;
+      color:#fff;
+      outline:none;
+    }
+    #top button{ background:#242424; font-weight:1000; }
+    #top button[disabled]{ opacity:.45; }
+    #top button:focus, #top select:focus, #top input:focus{
+      border-color: var(--focus);
+      box-shadow: 0 0 0 3px rgba(77,163,255,.25);
+    }
+    #top .grow{ flex:1; min-width:0; }
+
+    /* 日志：最多三行 */
+    #msg{
+      position:fixed;
+      left:10px; right:10px;
+      top:56px;
+      z-index:9000;
+      pointer-events:none;
+      font-size:12px;
+      line-height:1.35;
+      white-space:pre-wrap;
+      background:rgba(0,0,0,.35);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:12px;
+      padding:8px 10px;
+      transform: translateZ(0);
+    }
+
+    /* Canvas：必须有 width/height 100% + setSize(..., true) 才不会“左上角小块” */
+    #canvas{
+      position:fixed;
+      left:0; right:0;
+      top:120px; /* JS 会根据 top/msg/nav 重新计算 */
+      bottom: calc(var(--navH) + var(--safeB));
+      z-index:1;
+
+      width:100%;
+      height:100%;
+
+      touch-action:none;
+      -ms-touch-action:none;
+    }
+
+    /* 视觉导航：只显示，不吃事件 */
+    #nav{
+      position:fixed; left:0; right:0; bottom:0;
+      height: calc(var(--navH) + var(--safeB));
+      padding-bottom: var(--safeB);
+      display:flex;
+      background:#111;
+      border-top:1px solid var(--line);
+      z-index:2147483646;
+
+      transform: translateZ(0);
+      will-change: transform;
+      pointer-events:none;
+    }
+    #nav .navItem{
+      flex:1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#fff;
+      font-size:16px;
+      font-weight:1100;
+      opacity:.95;
+    }
+    #nav .navItem.active{ background:#1c1c1c; }
+
+    /* 事件导航：透明层接事件，绕开 WebGL 吞触摸 */
+    #navHit{
+      position:fixed; left:0; right:0; bottom:0;
+      height: calc(var(--navH) + var(--safeB));
+      padding-bottom: var(--safeB);
+      display:flex;
+      z-index:2147483647;
+
+      background:transparent;
+      transform: translateZ(0);
+      will-change: transform;
+      pointer-events:auto;
+      touch-action:manipulation;
+      -ms-touch-action:manipulation;
+    }
+    #navHit .hit{ flex:1; }
+  </style>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "/static/vendor/three.module.js"
+    }
+  }
+  </script>
+</head>
+
+<body>
+
+<div id="top">
+  <select id="sel" class="grow"></select>
+  <button id="btnRefresh" onclick="loadList()">刷新</button>
+  <button id="btnLoad" onclick="loadMap()" disabled>加载</button>
+
+  <!-- ✅ 新增：下载 LAS -->
+  <button id="btnDownloadLas" onclick="downloadLas()" disabled>下载LAS</button>
+
+  <input id="size" type="range" min="1" max="30" value="12" oninput="applySize()" style="width:140px"/>
+  <button id="btnReset" onclick="resetView()">重置</button>
+</div>
+
+<div id="msg"></div>
+<canvas id="canvas"></canvas>
+
+<!-- 视觉导航 -->
+<div id="nav">
+  <div class="navItem">状态</div>
+  <div class="navItem">探索</div>
+  <div class="navItem active">地图</div>
+</div>
+
+<!-- 事件导航 -->
+<div id="navHit">
+  <div class="hit" data-go="/"></div>
+  <div class="hit" data-go="/explore"></div>
+  <div class="hit" data-go="/map"></div>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { TrackballControls } from '/static/vendor/TrackballControls.js';
+import { PLYLoader } from '/static/vendor/PLYLoader.js';
+
+const API = location.origin;
+
+const msgEl = document.getElementById("msg");
+const canvasEl = document.getElementById("canvas");
+const selEl = document.getElementById("sel");
+const btnLoadEl = document.getElementById("btnLoad");
+const btnDownloadLasEl = document.getElementById("btnDownloadLas");
+
+const LOW_POWER = true; // 遥控器设备建议默认低功耗，更稳
+let renderer, scene, camera, controls;
+let pointsObj = null;
+
+let loading = false;
+let lastBlobUrl = null;
+let mapsCache = [];
+
+/* ===== 输出：最多三行 ===== */
+const _log = [];
+function renderLog(){ msgEl.innerText = _log.slice(-3).join("\n"); }
+function setMsg(t){
+  _log.length = 0;
+  if(t && String(t).trim()!=="") _log.push(String(t));
+  renderLog();
+}
+function addMsg(t){
+  if(!t) return;
+  for(const line of String(t).split("\n")){
+    if(line.trim()==="") continue;
+    _log.push(line);
+  }
+  while(_log.length > 3) _log.shift();
+  renderLog();
+}
+
+/* ===== 布局：用真实高度算 canvas 区域 ===== */
+function layout(){
+  const topH = document.getElementById("top").getBoundingClientRect().height;
+  const msgH = msgEl.getBoundingClientRect().height;
+  const navH = document.getElementById("nav").getBoundingClientRect().height;
+
+  canvasEl.style.top = (topH + msgH + 8) + "px";
+  canvasEl.style.bottom = navH + "px";
+}
+
+/* ===== three init ===== */
+function init3D(){
+  renderer = new THREE.WebGLRenderer({
+    canvas: canvasEl,
+    antialias: !LOW_POWER,
+    powerPreference: LOW_POWER ? "low-power" : "high-performance",
+    alpha: false
+  });
+
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x0f0f10);
+
+  camera = new THREE.PerspectiveCamera(60, 1, 0.01, 1e7);
+  camera.position.set(6, 6, 6);
+
+  controls = new TrackballControls(camera, renderer.domElement);
+  controls.rotateSpeed = 1.5;
+  controls.zoomSpeed = 1.2;
+  controls.panSpeed = 0.8;
+  controls.dynamicDampingFactor = 0.18;
+  controls.staticMoving = false;
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+
+  window.addEventListener("resize", () => { layout(); onResize(); });
+  window.addEventListener("orientationchange", () => {
+    setTimeout(() => { layout(); onResize(); }, 150);
+  });
+
+  // ✅ 选择变化时，同步按钮可用状态
+  selEl.addEventListener("change", () => {
+    const ok = !!(selEl.value || mapsCache[0]);
+    btnLoadEl.disabled = !ok;
+    btnDownloadLasEl.disabled = !ok;
+  });
+
+  layout();
+  onResize();
+  animate();
+
+  setMsg("3D 就绪");
+}
+
+function onResize(){
+  const rect = canvasEl.getBoundingClientRect();
+  const w = Math.max(1, rect.width);
+  const h = Math.max(1, rect.height);
+
+  // ✅ 关键：第三个参数 true，否则会出现“左上角一小块”
+  renderer.setSize(w, h, true);
+
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+
+  // Trackball 需要知道 domElement 尺寸
+  if (controls && controls.handleResize) controls.handleResize();
+}
+
+function animate(){
+  requestAnimationFrame(animate);
+  if (controls) controls.update();
+  renderer.render(scene, camera);
+}
+
+/* ===== 清理点云对象 ===== */
+function clearPoints(){
+  if(pointsObj){
+    scene.remove(pointsObj);
+    pointsObj.geometry?.dispose();
+    pointsObj.material?.dispose();
+    pointsObj = null;
+  }
+  if(lastBlobUrl){
+    try{ URL.revokeObjectURL(lastBlobUrl); }catch(e){}
+    lastBlobUrl = null;
+  }
+}
+
+/* ===== 点大小 ===== */
+window.applySize = function(){
+  if(pointsObj?.material){
+    pointsObj.material.size = Number(document.getElementById("size").value) * 0.01;
+    pointsObj.material.needsUpdate = true;
+  }
+};
+
+/* ===== 强制居中：BoundingSphere 最稳 ===== */
+window.resetView = function(){
+  if(!pointsObj){
+    camera.position.set(6,6,6);
+    controls.target.set(0,0,0);
+    return;
+  }
+
+  const geo = pointsObj.geometry;
+  geo.computeBoundingSphere();
+  const bs = geo.boundingSphere;
+
+  const c = bs.center;
+  const r = Math.max(bs.radius, 0.5);
+
+  controls.target.copy(c);
+
+  const fov = (camera.fov * Math.PI) / 180;
+  const dist = (r / Math.sin(fov / 2)) * 1.15;
+
+  camera.position.set(c.x + dist, c.y + dist, c.z + dist);
+  camera.near = Math.max(0.01, dist / 2000);
+  camera.far  = Math.max(2000, dist * 10);
+  camera.updateProjectionMatrix();
+};
+
+/* ===== fetch helpers ===== */
+async function fetchJson(url, timeoutMs=12000){
+  const ac = new AbortController();
+  const t = setTimeout(() => ac.abort(), timeoutMs);
+  try{
+    const r = await fetch(url, { signal: ac.signal, cache: "no-store" });
+    const txt = await r.text();
+    if(!r.ok) throw new Error(`${r.status} ${txt}`);
+    return txt ? JSON.parse(txt) : {};
+  } finally {
+    clearTimeout(t);
+  }
+}
+
+async function fetchBlob(url, timeoutMs=60000){
+  const ac = new AbortController();
+  const t = setTimeout(() => ac.abort(), timeoutMs);
+  try{
+    const r = await fetch(url, { signal: ac.signal, cache:"no-store" });
+    if(!r.ok){
+      const txt = await r.text().catch(()=> "");
+      throw new Error(`${r.status} ${txt}`);
+    }
+    return await r.blob();
+  } finally {
+    clearTimeout(t);
+  }
+}
+
+/* ===== 列表 ===== */
+window.loadList = async function(){
+  setMsg("获取列表…");
+  try{
+    const j = await fetchJson(`${API}/api/maps`, 8000);
+    mapsCache = j.maps || [];
+
+    selEl.innerHTML = "";
+    if(mapsCache.length === 0){
+      const o = document.createElement("option");
+      o.value = ""; o.textContent = "未找到 .pcd";
+      selEl.appendChild(o);
+      btnLoadEl.disabled = true;
+      btnDownloadLasEl.disabled = true;
+      setMsg("未找到 .pcd");
+      return;
+    }
+
+    for(const name of mapsCache){
+      const o = document.createElement("option");
+      o.value = name;
+      o.textContent = name;
+      selEl.appendChild(o);
+    }
+    selEl.value = mapsCache[0];
+
+    btnLoadEl.disabled = false;
+    btnDownloadLasEl.disabled = false;
+
+    setMsg(`列表 ✅ ${mapsCache.length} 个`);
+  }catch(e){
+    setMsg("获取失败 ❌");
+    addMsg(e.name === "AbortError" ? "超时" : String(e));
+  }
+};
+
+/* ===== 加载点云 ===== */
+window.loadMap = async function(){
+  if(loading) return;
+  loading = true;
+  btnLoadEl.disabled = true;
+  btnDownloadLasEl.disabled = true;
+
+  try{
+    clearPoints();
+
+    const name = selEl.value || mapsCache[0] || "";
+    if(!name){
+      setMsg("未选择文件");
+      return;
+    }
+
+    setMsg(`加载: ${name}`);
+
+    const url = `${API}/api/maps/preview/${encodeURIComponent(name)}?t=${Date.now()}`;
+
+    const ac = new AbortController();
+    const tt = setTimeout(() => ac.abort(), 20000);
+    const resp = await fetch(url, { signal: ac.signal, cache:"no-store" });
+    clearTimeout(tt);
+
+    if(!resp.ok) throw new Error(`${resp.status} ${await resp.text()}`);
+
+    const buf = await resp.arrayBuffer();
+    addMsg(`下载 ✅ ${(buf.byteLength/1024/1024).toFixed(2)}MB`);
+
+    lastBlobUrl = URL.createObjectURL(new Blob([buf], { type:"application/octet-stream" }));
+
+    const loader = new PLYLoader();
+    loader.load(
+      lastBlobUrl,
+      (geo) => {
+        // 释放 blob url
+        try{ URL.revokeObjectURL(lastBlobUrl); }catch(e){}
+        lastBlobUrl = null;
+
+        if(!geo.attributes || !geo.attributes.position){
+          setMsg("解析失败 ❌");
+          addMsg("无 position");
+          return;
+        }
+
+        // 平移到中心（保持你原来的逻辑）
+        geo.computeBoundingBox();
+        const center = geo.boundingBox.getCenter(new THREE.Vector3());
+        geo.translate(-center.x, -center.y, -center.z);
+
+        const mat = new THREE.PointsMaterial({
+          size: 0.12,               // 安卓更容易看见
+          sizeAttenuation: true,
+          vertexColors: false
+        });
+
+        pointsObj = new THREE.Points(geo, mat);
+        scene.add(pointsObj);
+
+        // 安卓：尺寸/布局可能延迟，强制 resize + 二次居中
+        requestAnimationFrame(() => {
+          layout();
+          onResize();
+          applySize();
+          resetView();
+          setTimeout(() => { try{ resetView(); }catch(e){} }, 120);
+        });
+
+        setMsg(`显示 ✅ 点数=${geo.attributes.position.count}`);
+      },
+      undefined,
+      (err) => {
+        setMsg("解析失败 ❌");
+        addMsg(String(err));
+      }
+    );
+
+  }catch(e){
+    setMsg("加载失败 ❌");
+    addMsg(e.name === "AbortError" ? "下载超时" : String(e));
+  }finally{
+    loading = false;
+    // 只要列表里还有，就恢复可用
+    const ok = !!(selEl.value || mapsCache[0]);
+    btnLoadEl.disabled = !ok;
+    btnDownloadLasEl.disabled = !ok;
+  }
+};
+
+/* ===== ✅ 下载 LAS：调用后端 /api/maps/download_las/{filename} ===== */
+window.downloadLas = async function(){
+  if(loading) return;
+
+  const name = selEl.value || mapsCache[0] || "";
+  if(!name){
+    setMsg("未选择文件");
+    return;
+  }
+
+  // 后端要求 filename 是 .pcd；返回的是 .las
+  const url = `${API}/api/maps/download_las/${encodeURIComponent(name)}?t=${Date.now()}`;
+
+  loading = true;
+  btnLoadEl.disabled = true;
+  btnDownloadLasEl.disabled = true;
+
+  try{
+    setMsg(`导出LAS: ${name}`);
+
+    // LAS 可能比较大，给更长超时
+    const blob = await fetchBlob(url, 120000);
+
+    const lasName = name.replace(/\.pcd$/i, ".las") || "map.las";
+    addMsg(`导出 ✅ ${(blob.size/1024/1024).toFixed(2)}MB`);
+
+    // 触发下载（移动端/桌面都通用）
+    const a = document.createElement("a");
+    const objUrl = URL.createObjectURL(blob);
+    a.href = objUrl;
+    a.download = lasName;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    setTimeout(() => {
+      try{ URL.revokeObjectURL(objUrl); }catch(e){}
+    }, 1500);
+
+    setMsg(`已开始下载 ✅ ${lasName}`);
+  }catch(e){
+    setMsg("下载失败 ❌");
+    addMsg(e.name === "AbortError" ? "超时" : String(e));
+  }finally{
+    loading = false;
+    const ok = !!(selEl.value || mapsCache[0]);
+    btnLoadEl.disabled = !ok;
+    btnDownloadLasEl.disabled = !ok;
+  }
+};
+
+/* ===== 导航点击：透明层接事件 ===== */
+const navHit = document.getElementById("navHit");
+function doNav(e){
+  const t = e.target.closest(".hit");
+  if(!t) return;
+  const p = t.getAttribute("data-go");
+  if(p) location.href = p;
+}
+navHit.addEventListener("pointerup", doNav, { passive:true });
+navHit.addEventListener("touchend", doNav, { passive:true });
+
+/* ===== 启动 ===== */
+init3D();
+loadList();
+</script>
+
+</body>
+</html>

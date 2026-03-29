@@ -1,0 +1,34 @@
+%YAML:1.0
+---
+# https://github.com/PlusToolkit/aruco 
+# generate
+# https://damianofalcioni.github.io/js-aruco2/samples/marker-creator/marker-creator.html?dictionary=ARUCO_MIP_36h12
+# online detect
+# https://damianofalcioni.github.io/js-aruco2/samples/getusermedia/getusermedia_ARUCO_MIP_36h12.html
+
+
+# https://blog.csdn.net/sinat_16643223/article/details/115212935
+aruco_bc_dict: ARUCO_MIP_36h12
+aruco_bc_nmarkers: 8
+
+# mInfoType == PIX;
+aruco_bc_mInfoType: 0
+aruco_bc_markers:
+# 这里只是布局，尺度对检测结果没有影响
+# 角点，顺时针转圈
+
+   - { id:8, corners:[ [ -96.95, 108.90, 0. ], [ 97.98, 108.90, 0. ], [ 97.98, -86.82, 0. ], [ -96.95, -86.82, 0. ] ] }
+
+   - { id:15, corners:[ [ -573.008, 572.98, 0. ], [ 573., 573., 0. ], [ 573., -573., 0. ], [ -573., -573., 0. ] ] }
+
+   - { id:10, corners:[ [ -1199., 1226., 0. ], [ -588., 1226., 0. ], [ -588., 615., 0. ], [ -1199., 615., 0. ] ] }
+
+   - { id:31, corners:[ [ -1167., 269., 0. ], [ -721., 269., 0. ], [ -721., -177., 0. ], [ -1167., -177., 0. ] ] }
+
+   - { id:5, corners:[ [ -1119., -573., 0. ], [ -612., -573., 0. ], [ -612., -1078., 0. ], [ -1119., -1078., 0. ] ] }
+
+   - { id:20, corners:[ [ 459., 1227., 0. ], [ 1011., 1227., 0. ], [ 1011., 675., 0. ], [ 459., 675., 0. ] ] }
+
+   - { id:24, corners:[ [ 716., 287., 0. ], [ 1202., 287., 0. ], [ 1202., -197., 0. ], [ 716., -197., 0. ] ] }
+
+   - { id:21, corners:[ [ 595., -592., 0. ], [ 1117., -592., 0. ], [ 1117., -1112., 0. ], [ 595., -1112., 0. ] ] }   

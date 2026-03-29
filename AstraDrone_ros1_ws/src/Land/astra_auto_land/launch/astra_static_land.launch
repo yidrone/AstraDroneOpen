@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<launch>
+<!-- TODO：目标丢失搜索阶段待加，yaw角对齐待加 -->
+
+    <!-- 如果想定高就不用锁桨检查和误差检查，如果想锁桨检查就不定高 -->
+    <!-- 精准着陆节点 -->
+    <node pkg="astra_auto_land" type="astra_static_land" name="astra_static_land" output="screen">
+        <!-- 基本参数 -->
+        <param name="search_altitude" value="1.0" />
+        <param name="horizontal_acceptance_radius" value="0.1" />  <!-- 最后阶段基础对准精度 -->
+        <param name="yaw_acceptance_threshold" value="0.05" />  <!-- 第二阶段基础对准精度，弧度 -->
+
+        <!-- 超时参数 -->
+        <param name="target_timeout" value="3.5" />
+        <param name="search_timeout" value="100.0" />
+        
+        <!-- 降落的速度（位置梯度） -->
+        <param name="base_descent_z" value="0.5" />
+        <param name="max_descent_z" value="1.0" />
+        <param name="max_yaw_speed" value="0.08" />
+
+        <!-- 与码的距离来分阶段 -->
+        <param name="lock_motor_z_threshold" value="0.4" />    <!-- 越小越安全 -->
+        <param name="z_two_stage" value="3.5" />
+        <param name="z_three_stage" value="30.0" />
+
+        <!-- 触地检查，实物相机离地面高建议用true，更安全，仿真建议用false，更快，用false时需要把lock_motor_z_threshold变小 -->
+        <param name="need_ground_check" value="true" />  
+        <param name="ground_check_interval" value="0.05" />     <!-- 越小越安全 -->
+        <param name="ground_check_duration" value="2.0" />      <!-- 越大越安全 -->
+
+    </node>
+
+</launch>

@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- 无人机追踪系统启动文件 -->
+     <!-- Launch static transform publishers T = 50ms --> 
+     <node pkg="tf" type="static_transform_publisher" name="tf_baseLink_camera"
+          args="0 0 0 -1.5708 0 3.1415 base_link camera 50"/>
+
+    <!-- 参数配置 -->
+    <arg name="image_topic" default="/iris_mid360/camera/rgb/image_raw" 
+         doc="相机图像话题名称"/>
+    <arg name="target_topic" default="/target_pixel" 
+         doc="目标像素坐标话题名称"/>
+    <arg name="cmd_topic" default="/mavros/setpoint_raw/local" 
+         doc="无人机控制指令话题名称"/>
+    <arg name="state_topic" default="/mavros/state" 
+         doc="无人机状态话题名称"/>
+    <arg name="image_info" default="/iris_mid360/camera/depth/camera_info" />
+    
+    <!-- PID参数配置 -->
+    <arg name="pid_kp" default="0.002" doc="PID比例系数"/>
+    <arg name="pid_ki" default="0.000001" doc="PID积分系数"/>
+    <arg name="pid_kd" default="0.0006" doc="PID微分系数"/>
+    
+    <!-- 控制参数 -->
+    <arg name="max_velocity" default="1.5" doc="最大速度限制 (m/s)"/>
+    <arg name="target_height" default="3.0" doc="目标飞行高度 (m)"/>
+    <arg name="deadzone_pixels" default="10" doc="死区像素范围"/>
+    
+    <!-- 调试模式 -->
+    <arg name="debug" default="true" doc="是否启用调试模式"/>
+
+     <!-- set to value="gdbserver localhost:10000" for remote debugging -->
+     <arg name="launch_prefix" default="" />
+     <!-- configure camera input -->
+     <arg name="queue_size" default="1" />
+
+    <!-- 启动无人机追踪控制器 -->
+    <node pkg="pix_tracker" 
+          type="pix_tracker.py" 
+          name="pix_tracker" 
+          output="screen"
+          required="true">
+        
+        <!-- PID参数 -->
+        <param name="pid/kp" value="$(arg pid_kp)"/>
+        <param name="pid/ki" value="$(arg pid_ki)"/>
+        <param name="pid/kd" value="$(arg pid_kd)"/>
+        
+        <!-- 控制参数 -->
+        <param name="control/max_velocity" value="$(arg max_velocity)"/>
+        <param name="control/target_height" value="$(arg target_height)"/>
+        <param name="control/deadzone_pixels" value="$(arg deadzone_pixels)"/>
+        
+        <!-- 调试参数 -->
+        <param name="debug" value="$(arg debug)"/>
+    </node>
+    
+    <!-- 启动目标发布器 -->
+    <node pkg="pix_tracker" 
+          type="target_pulisher.py" 
+          name="target_pulisher" 
+          output="screen"
+          required="false">
+        
+        <!-- 话题重映射 -->
+        <remap from="~image_topic" to="$(arg image_topic)"/>
+        <remap from="~target_topic" to="$(arg target_topic)"/>
+        
+        <!-- 显示参数 -->
+        <param name="display/window_name" value="Drone Camera - Click to Track"/>
+        <param name="display/marker_size" value="10"/>
+        
+        <!-- 调试参数 -->
+        <param name="debug" value="$(arg debug)"/>
+    </node>
+
+     <!-- apriltag_ros continuous detection node -->
+     <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="apriltag_ros_continuous_node" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)">
+          <!-- Remap topics from those used in code to those on the ROS network -->
+          <remap from="image_rect" to="$(arg image_topic)" />
+          <remap from="camera_info" to="$(arg image_info)" />
+
+          <param name="publish_tag_detections_image" type="bool" value="true" /><!-- default: false -->
+          <param name="queue_size" type="int" value="$(arg queue_size)" />
+
+          <!-- load parameters (incl. tag family, tags, etc.) -->
+          <rosparam command="load" file="$(find apriltag_ros)/config/settings.yaml"/>
+          <rosparam command="load" file="$(find apriltag_ros)/config/tags.yaml"/>
+     </node>
+</launch>

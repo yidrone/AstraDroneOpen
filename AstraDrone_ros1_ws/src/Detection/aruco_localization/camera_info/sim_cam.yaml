@@ -1,0 +1,29 @@
+image_width: 1280
+image_height: 920
+camera_name: iris
+
+#K
+camera_matrix:
+  rows: 3
+  cols: 3
+  data: [686.3181462138707, 0, 640.5, 0, 686.318146213870, 460.5, 0, 0, 1]
+  
+distortion_model: plumb_bob
+
+#D
+distortion_coefficients:
+  rows: 1
+  cols: 5
+  data: [0.0, 0.0, 0.0, 0.0, 0.0]
+  
+#R
+rectification_matrix:
+  rows: 3
+  cols: 3
+  data: [1, 0, 0, 0, 1, 0, 0, 0, 1]
+  
+#P
+projection_matrix:
+  rows: 3
+  cols: 4
+  data: [686.3181462138707, 0, 640.5, 0, 0, 686.318146213870, 460.5, 0, 0, 0, 1, 0]

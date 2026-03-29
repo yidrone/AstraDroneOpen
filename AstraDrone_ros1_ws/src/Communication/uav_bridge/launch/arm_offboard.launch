@@ -1,0 +1,7 @@
+<launch>
+    <arg name="takeoff_height" default="1.5" />
+
+    <node pkg="uav_bridge" type="arm_offboard_node" name="arm_offboard_node" output="screen">
+        <param name="height" value="$(arg takeoff_height)" />
+    </node>
+</launch>

@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name='iris_mid360_1'>
+    <include>
+      <uri>model://iris_without_GPS_1</uri>
+    </include>
+
+    <include>
+      <uri>model://mid360_1</uri>
+      <pose>0 0 0.08 0 0 0</pose>
+    </include>
+    <joint name="mid360_joint" type="revolute">
+      <child>mid360_1::lidar_link</child>
+      <parent>iris_without_GPS_1::base_link</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <upper>0</upper>
+          <lower>0</lower>
+        </limit>
+      </axis>
+    </joint>
+
+  </model>
+</sdf>

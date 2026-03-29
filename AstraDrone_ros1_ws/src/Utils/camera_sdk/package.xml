@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>camera_sdk</name>
+  <version>0.1.0</version>
+  <description>USB Camera SDK with reconnection mechanism</description>
+  
+  <maintainer email="uav@ubuntu.com">uav</maintainer>
+  <license>BSD</license>
+  
+  <buildtool_depend>catkin</buildtool_depend>
+  
+  <!-- 构建依赖 -->
+  <build_depend>roscpp</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>image_transport</build_depend>
+  <build_depend>camera_info_manager</build_depend>
+  <build_depend>dynamic_reconfigure</build_depend>
+  
+  <!-- 运行时依赖 -->
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>image_transport</exec_depend>
+  <exec_depend>camera_info_manager</exec_depend>
+  <exec_depend>dynamic_reconfigure</exec_depend>
+  <exec_depend>libturbojpeg</exec_depend>
+  <exec_depend>dynamic_reconfigure</exec_depend>
+  <!-- 如果使用了消息或服务 -->
+  <build_depend>message_generation</build_depend>
+  <exec_depend>message_runtime</exec_depend>
+  <build_depend>cv_bridge</build_depend>
+  <exec_depend>cv_bridge</exec_depend>
+</package>

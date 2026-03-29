@@ -1,0 +1,66 @@
+### IDE / OS 配置文件 ###
+**/.idea/
+**/.vscode/
+**/*.code-workspace
+.DS_Store
+Thumbs.db
+.vscode
+*~
+*.swp
+*.swo
+
+### Python / 虚拟环境 ###
+**/__pycache__/
+**/*.py[cod]
+.venv/
+venv/
+env/
+ENV/
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+*.egg-info/
+.eggs/
+
+### 通用构建缓存 ###
+**/CMakeFiles/
+**/CMakeCache.txt
+**/cmake-build-*/
+**/cmake_src/
+
+### ROS1 / ROS2 工作空间产物 ###
+**/build/
+**/devel/
+**/devel_isolated/
+**/build_isolated/
+**/install/
+**/log/
+**/.catkin_tools/
+**/*.catkin_workspace
+**/*.catkin
+.colcon/
+**/.ros/
+
+# 具体工作空间标记文件
+AstraDrone_ros1_ws/.catkin_workspace
+
+### ROS 运行与记录文件 ###
+*.bag
+*.bag.active
+*.bag.metadata
+*.db3
+*.mcap
+
+### 仿真与传感器缓存 ###
+**/.gazebo/
+**/.ignition/
+
+### 第三方库编译产物 ###
+third_party/**/build/
+third_party/**/bin/
+third_party/**/lib/
+third_party/**/lib64/
+third_party/**/obj/
+third_party/**/CMakeFiles/
+third_party/**/.cache/
+AstraDrone_ros1_ws/src/SLAM/FAST_LIO/PCD/*.pcd

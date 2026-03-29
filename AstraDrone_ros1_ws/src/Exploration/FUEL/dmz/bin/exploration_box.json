@@ -1,0 +1,8 @@
+{
+  "box_min_x": 0.0,
+  "box_min_y": -10.0,
+  "box_min_z": -0.3,
+  "box_max_x": 50.0,
+  "box_max_y": 15.0,
+  "box_max_z": 3.0
+}

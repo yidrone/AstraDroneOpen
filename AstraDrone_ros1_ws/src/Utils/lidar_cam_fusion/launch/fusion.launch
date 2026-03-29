@@ -1,0 +1,10 @@
+<launch>
+  <!-- 相机-雷达融合节点 -->
+  <node pkg="lidar_cam_fusion" type="lidar_cam_fusion" name="lidar_cam_fusion" output="screen">
+    <rosparam command="load" file="$(find lidar_cam_fusion)/config/lidar_cam_fusion.yaml" />
+  </node>
+
+  <!-- 静态TF发布：IMU到Lidar -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="fmu_to_lidar_tf" 
+        args="0.099 0 -0.0747 -3.14159 -2.18  0 fmu livox_frame " />
+</launch>

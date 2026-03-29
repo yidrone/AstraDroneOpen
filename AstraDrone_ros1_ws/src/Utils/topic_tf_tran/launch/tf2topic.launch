@@ -1,0 +1,20 @@
+<launch>
+    <!-- 从tf转到odom/pose -->
+    <node name="tf_to_odometry_node" pkg="topic_tf_tran" type="tf2topic" output="screen">
+        
+        <!-- 传入参数 -->
+        <param name="map_frame_id_" value="map" />
+        <param name="base_link_frame_id_" value="base_link" />
+
+        <!-- 输出参数 -->
+        <param name="odom_pub_topic" value="/car/local_position/odom" />
+        <param name="pose_pub_topic" value="/car/local_position/pose" />
+
+        <!-- 发布模式控制参数 -->
+        <!-- 0: 只发布nav_msgs::Odometry -->
+        <!-- 1: 只发布geometry_msgs::PoseStamped -->
+        <!-- 2: 两者都发布 -->
+        <param name="publish_mode" value="2" />
+
+    </node>
+</launch>

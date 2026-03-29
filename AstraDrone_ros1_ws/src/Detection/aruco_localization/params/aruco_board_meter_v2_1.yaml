@@ -1,0 +1,32 @@
+%YAML:1.0
+---
+# https://github.com/PlusToolkit/aruco 
+# generate
+# https://damianofalcioni.github.io/js-aruco2/samples/marker-creator/marker-creator.html?dictionary=ARUCO_MIP_36h12
+# online detect
+# https://damianofalcioni.github.io/js-aruco2/samples/getusermedia/getusermedia_ARUCO_MIP_36h12.html
+
+
+# https://blog.csdn.net/sinat_16643223/article/details/115212935
+aruco_bc_dict: ARUCO_MIP_36h12
+aruco_bc_nmarkers: 7
+
+# mInfoType == Meter;
+aruco_bc_mInfoType: 1
+aruco_bc_markers:
+
+# 角点，顺时针转圈
+
+   - { id:15, corners:[ [ -0.29239, 0.29137, 0. ], [ 0.28984, 0.29137, 0. ], [ 0.28984, -0.29035, 0. ], [ -0.29239, -0.29035, 0. ] ] }
+
+   - { id:10, corners:[ [ -0.16297, 0.13502, 0. ], [ -0.11069, 0.573, 0. ], [ -0.11069, 0.08282, 0. ], [ -0.16297, 0.08282, 0. ] ] }
+
+   - { id:20, corners:[ [ 0.15387, 0.13502, 0. ], [ 0.20610, 0.13502, 0. ], [ 0.20610, 0.08282, 0. ], [ 0.15387, 0.08282, 0. ] ] }
+
+   - { id:8, corners:[ [ -0.01369, 0.01368, 0. ], [ 0.01366, 0.01368, 0. ], [ 0.01366, -0.01366, 0. ], [ -0.01369, -0.01366, 0. ] ] }
+
+   - { id:24, corners:[ [ 0.06963, -0.01366, 0. ], [ 0.09647, -0.01366, 0. ], [ 0.09647, -0.04114, 0. ], [ 0.06963, -0.04114, 0. ] ] }
+
+   - { id:5, corners:[ [ -0.05226, -0.02752, 0. ], [ -0.02497, -0.02752, 0. ], [ -0.02497, -0.05421, 0. ], [ -0.05226, -0.05421, 0. ] ] }
+
+   - { id:31, corners:[ [ -0.10459, -0.15442, 0. ], [ -0.05226, -0.15442, 0. ], [ -0.05226, -0.20659, 0. ], [ -0.10459, -0.20659, 0. ] ] }

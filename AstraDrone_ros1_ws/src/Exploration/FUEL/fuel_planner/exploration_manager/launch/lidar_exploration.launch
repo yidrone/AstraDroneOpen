@@ -1,0 +1,142 @@
+<launch>
+  <!-- 设置全局 use_sim_time 参数 -->
+  <!-- for rosbag play xx clock -->
+  <!-- <param name="/use_sim_time" value="true" /> -->
+
+  <node pkg="tf" type="static_transform_publisher" name="tf_world_map" 
+      args="0.0 0 0 0 0 0 world map 40" />
+
+  <node pkg="tf" type="static_transform_publisher" name="tf123" 
+      args="0.0 0 0 0 0.0 0 world camera_init 40" />
+
+  <!-- for pointclouds -->
+  <!-- 存储全局点云数据并构建ikdtree后发布 ~ 只是用来表征已探索环境空间信息的，与算法无关 -->
+  <!-- <node pkg="eva_metric" name="globalclouds" type="globalclouds" output="screen" >
+      <param name="config_name" value="$(find eva_metric)/config/demo.yaml" type="string"></param>
+    
+      <param name="pcd/store_dir" value="$(find eva_metric)/../pcd" type="string" />
+  </node> -->
+
+  <node pkg="tf" type="static_transform_publisher" name="tf_base2camera" 
+      args="0.0 0 0 0 0.523 0 body camera_link 40" />
+
+  <!-- 从tf转到odom -->
+  <!-- output /mavros/camera_pose --> 
+  <node name="tf_to_odometry_node" pkg="topic_tf_tran" type="tf2topic" output="screen">
+      <!-- 传入参数 -->
+      <param name="map_frame_id_" value="camera_init" />
+      <param name="base_link_frame_id_" value="camera_link" />
+      <!-- 输出参数 -->
+      <param name="odom_pub_topic" value="/mavros/camera_odom" />
+      <param name="pose_pub_topic" value="/mavros/lidar/pose" />
+
+      <!-- 发布模式控制参数 -->
+      <!-- 0: 只发布nav_msgs::Odometry -->
+      <!-- 1: 只发布geometry_msgs::PoseStamped -->
+      <!-- 2: 两者都发布 -->
+      <param name="publish_mode" value="1" />
+  </node>
+
+  <!-- rqt_reconfigure -->
+  <node name="rqt_reconfigure" pkg="rqt_reconfigure" type="rqt_reconfigure" />
+
+  <!-- size of map, change the size in x, y, z according to your application -->
+  <!-- 2025-11-12: map_size need bigger! ...   -->
+  <!-- 这里设定建图范围， 建图范围需要大于 探索区域box  -->
+  <!-- eg: box_x[-50, 60]  size_x 必须设定为 > max(abs(box_x(0)), abs(box_x(1)))*2 ~ 60*2 ~ 125 -->
+  <arg name="map_size_x" value="120.0"/>
+  <arg name="map_size_y" value="120.0"/>
+  <arg name="map_size_z" value=" 10.0"/>
+
+  <!-- 无人机初始位置设定，切入offboard， 先飞到这个位置，再接收trigger开始探索 -->
+  <arg name="init_x" value="0"/>
+  <arg name="init_y" value="0"/>
+  <arg name="init_z" value="1.2"/> 
+
+  <!-- 设置全局 use_sim_time 参数 -->
+  <!-- for rosbag play xx clock -->
+  <!-- <param name="/use_sim_time" value="true" /> -->
+
+  <!-- topic of your odometry such as VIO or LIO -->
+  <!-- <arg name="odom_topic" value="/mavros/local_position/odom" /> -->
+  <arg name="odom_topic" value="/mavros/local_position/odom" />
+  <!-- 下面的.yaml 设定了探索区域的box， 但是依旧需要调整上方的box -->
+  <rosparam command="load" file="/home/yidrone/AstraDrone/AstraDrone_ros1_ws/src/Exploration/FUEL/dmz/bin/box.yaml"/>
+
+  <!-- main algorithm params -->
+  <include file="$(find exploration_manager)/launch/algorithm_8.xml">
+
+    <arg name="map_size_x_" value="$(arg map_size_x)"/>
+    <arg name="map_size_y_" value="$(arg map_size_y)"/>
+    <arg name="map_size_z_" value="$(arg map_size_z)"/>
+
+    <arg name="init_z" value="$(arg init_z)"/>
+
+    <arg name="odometry_topic" value="$(arg odom_topic)"/>
+    <!-- sensor pose: transform of camera frame in the world frame -->
+    <!-- <arg name="sensor_pose_topic" value="/mavros/camera_pose"/> -->
+
+    <arg name="sensor_pose_topic" value="/mavros/lidar/pose"/>
+    
+    <!-- depth topic: depth image, 640x480 by default -->
+    <!-- cloud topic: point cloud measurement  -->
+    <!-- subscribe ONLY TO ONE of the two topics -->
+    <arg name="depth_topic" value="/camera/depth/image_raw12"/>
+    <!-- <arg name="depth_topic" value="/camera/depth/image_rect_raw"/> -->
+
+    <!-- 全局点云输入 -->
+    <!-- <arg name="cloud_topic" value="/freedom/static_pointcloud"/> -->
+    <arg name="cloud_topic" value="/cloud_registered"/>
+  
+    <arg name="cx" value="424.1437683105469"/>
+    <arg name="cy" value="239.45477294921875"/>
+    <arg name="fx" value="424.1437683105469"/>
+    <arg name="fy" value="424.9909973144531"/>
+
+    <!-- maximum velocity and acceleration the drone will reach -->
+    <arg name="max_vel" value="0.5" />
+    <arg name="max_acc" value="0.5" />
+  </include>
+
+  <!-- trajectory server -->
+  <node pkg="plan_manage" name="traj_server" type="traj_server" output="screen">
+    <remap from="/position_cmd" to="planning/pos_cmd"/>
+
+    <!-- 是否使用控制器 -->
+    <param name="traj_server/use_controller" value="false" type="bool"/>
+    <!-- only for mavros-position-control 0.2 default -->
+    <param name="traj_server/forward_dt" value="0.2" type="double"/>
+
+    <!-- yaw角调节开始距离 -->
+    <param name="traj_server/adjust_distance_yaw" value="4" type="double"/>
+    <!-- 发送目标点的预瞄距离 -->
+    <param name="traj_server/target_dist" value="0.5" type="double"/>
+    
+    <remap from="/mavros/setpoint_position/local" to="/mavros/setpoint_position/local"/>
+
+    <!-- traj_server/disable_yaw, only for lidar -->
+    <param name="traj_server/disable_yaw" value="false" type="bool"/>
+
+    <remap from="/odom_world" to="$(arg odom_topic)"/>
+    <param name="traj_server/time_forward" value="1.5" type="double"/>
+    <param name="traj_server/pub_traj_id" value="4" type="int"/>
+    <param name="traj_server/init_x" value="$(arg init_x)" type="double"/>
+    <param name="traj_server/init_y" value="$(arg init_y)" type="double"/>
+    <param name="traj_server/init_z" value="$(arg init_z)" type="double"/>
+
+    <param name="perception_utils/top_angle" value="0.56125" type="double"/>
+    <param name="perception_utils/left_angle" value="0.69222" type="double"/>
+    <param name="perception_utils/right_angle" value="0.68901" type="double"/>
+    <param name="perception_utils/max_dist" value="4.5" type="double"/>
+    <param name="perception_utils/vis_dist" value="1.0" type="double"/>
+  </node>
+
+  <node pkg="waypoint_generator" name="waypoint_generator" type="waypoint_generator" output="screen">
+    <remap from="~odom" to="$(arg odom_topic)"/>        
+    <remap from="~goal" to="/move_base_simple/goal"/>
+    <remap from="~traj_start_trigger" to="/traj_start_trigger" />
+    <param name="waypoint_type" value="point"/>    
+  </node>
+
+
+</launch>

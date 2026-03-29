@@ -1,0 +1,551 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover"/>
+  <title>状态</title>
+  <style>
+    :root{
+      --bg:#0f0f10; --card:#171718; --line:#2a2a2a; --fg:#eaeaea;
+      --ok:#42d37c; --bad:#ff5d5d; --warn:#ffd166;
+      --navH:58px; --safeB: env(safe-area-inset-bottom, 0px);
+      --focus:#4da3ff;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;background:var(--bg);color:var(--fg);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto;
+      overflow:hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .wrap{
+      position:fixed;left:0;right:0;top:0;
+      bottom: calc(var(--navH) + var(--safeB));
+      padding:8px;
+      overflow:auto;
+    }
+
+    /* 顶部超紧凑状态栏 */
+    .topbar{
+      display:flex;align-items:center;gap:6px;
+      padding:5px 6px;
+      border:1px solid var(--line);
+      border-radius:12px;
+      background:#121213;
+      margin:2px 0 8px;
+    }
+    .title{font-size:12px;font-weight:1000;white-space:nowrap;}
+    .statusline{display:flex;gap:6px;margin-left:auto;flex-wrap:nowrap;}
+    .chip{
+      display:inline-flex;align-items:center;gap:5px;
+      padding:2px 6px;border:1px solid var(--line);
+      border-radius:999px;background:#0f0f10;
+      font-size:11px;white-space:nowrap;line-height:1.2;
+    }
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;}
+    .dot{width:7px;height:7px;border-radius:50%;background:var(--warn);flex:0 0 auto;}
+    .ok{color:var(--ok)} .bad{color:var(--bad)} .warn{color:var(--warn)}
+    .dot.ok{background:var(--ok)} .dot.bad{background:var(--bad)} .dot.warn{background:var(--warn)}
+
+    /* 主体卡片 */
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+    .card{
+      background:var(--card);border:1px solid var(--line);
+      border-radius:12px;padding:8px;min-height:56px;
+      display:flex;flex-direction:column;justify-content:space-between;
+    }
+    .k{font-size:11px;opacity:.8}
+    .v{font-size:12.5px;font-weight:900;opacity:.95;line-height:1.25;}
+    .v2{font-size:12px;font-weight:850;opacity:.92;line-height:1.2;}
+    .clip2{
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+
+    /* 探索范围（右侧纵向按钮） */
+    .boxPanel{
+      margin-top:8px;
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:8px;
+    }
+    .boxHeader{
+      display:flex;align-items:center;justify-content:space-between;gap:8px;
+      margin-bottom:6px;
+    }
+    .boxTitle{font-size:12px;font-weight:1100;opacity:.95;}
+    .boxHint{font-size:10px;opacity:.6;white-space:nowrap;}
+
+    /* 输入区更窄一点 + 右侧按钮更宽一点 */
+    .boxRow{
+      display:grid;
+      grid-template-columns: 1fr 96px;  /* 右侧按钮更宽 */
+      gap:6px;
+      align-items:stretch;
+    }
+    .boxGrid{
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      gap:5px;
+    }
+    .field{
+      background:#121213;border:1px solid var(--line);
+      border-radius:10px;padding:6px;
+      display:flex;flex-direction:column;gap:4px;
+      min-height:50px;
+    }
+    .field label{font-size:10px;opacity:.72;}
+    .field input{
+      width:100%;
+      padding:6px 6px;             /* 更窄一点 */
+      border-radius:9px;
+      border:1px solid #2f2f2f;
+      background:#0f0f10;
+      color:#fff;
+      font-size:12px;              /* 更紧凑 */
+      font-weight:900;
+      outline:none;
+    }
+    .field input:focus{
+      border-color: var(--focus);
+      box-shadow: 0 0 0 3px rgba(77,163,255,.18);
+    }
+
+    .boxSideBtns{display:flex;flex-direction:column;gap:6px;}
+    .boxSideBtns button{
+      flex:1;
+      padding:10px 6px;           /* 按钮更大 */
+      font-size:13px;
+      border-radius:10px;
+    }
+
+    /* 按钮区：三按钮同一行 */
+    .btnRow{
+      margin-top:8px;
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap:6px;
+    }
+    button{
+      width:100%;
+      border:1px solid var(--line);
+      background:#242424;
+      color:#fff;
+      font-weight:950;
+      border-radius:12px;
+      padding:10px;
+      font-size:14px;
+      outline:none;
+    }
+    button:active{transform:scale(0.99); opacity:.9;}
+    button:disabled{opacity:.55;}
+    button:focus{
+      border-color:var(--focus);
+      box-shadow:0 0 0 3px rgba(77,163,255,.22);
+    }
+
+    /* 日志：最多三行 */
+    #msg{
+      margin-top:8px;
+      font-size:11px;
+      opacity:.9;
+      white-space:pre-wrap;
+      background:#121213;
+      border:1px solid var(--line);
+      border-radius:10px;
+      padding:8px;
+      min-height:40px;
+    }
+
+    /* 底部导航 */
+    #nav{
+      position:fixed;left:0;right:0;bottom:0;
+      height: calc(var(--navH) + var(--safeB));
+      padding-bottom: var(--safeB);
+      display:flex;
+      background:#101010;
+      border-top:1px solid var(--line);
+      z-index:2147483647;
+      transform: translateZ(0);
+      will-change: transform;
+      pointer-events:auto;
+      touch-action: manipulation;
+    }
+    #nav button{
+      flex:1;border:none;border-radius:0;background:#101010;
+      font-weight:1100;
+      padding:12px 6px;
+      font-size:15px;
+    }
+    #nav .active{background:#1c1c1c;}
+  </style>
+</head>
+<body>
+
+  <div class="wrap">
+
+    <!-- 顶部状态栏 -->
+    <div class="topbar">
+      <div class="title">矿洞探索</div>
+
+      <div class="statusline">
+        <div class="chip"><span class="mono">M</span><b id="slMode">--</b></div>
+        <div class="chip"><span class="mono">A</span><b id="slArm">--</b></div>
+        <div class="chip"><span class="mono">B</span><b id="slBatt">--</b></div>
+        <div class="chip" title="连接">
+          <span class="dot warn" id="connDot"></span>
+          <b class="mono" id="connTxt">--</b>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="k">探索状态</div>
+        <div class="v" id="explState">--</div>
+      </div>
+      <div class="card">
+        <div class="k">位置</div>
+        <div class="v2 mono clip2" id="posText">--</div>
+      </div>
+    </div>
+
+    <div class="boxPanel">
+      <div class="boxHeader">
+        <div class="boxTitle">探索范围</div>
+        <div class="boxHint">开始探索会自动保存</div>
+      </div>
+
+      <div class="boxRow">
+        <div class="boxGrid">
+          <div class="field">
+            <label for="box_min_x">min_x</label>
+            <input id="box_min_x" type="number" step="0.1" value="-10.0"/>
+          </div>
+          <div class="field">
+            <label for="box_min_y">min_y</label>
+            <input id="box_min_y" type="number" step="0.1" value="-10.0"/>
+          </div>
+          <div class="field">
+            <label for="box_min_z">min_z</label>
+            <input id="box_min_z" type="number" step="0.1" value="0.0"/>
+          </div>
+
+          <div class="field">
+            <label for="box_max_x">max_x</label>
+            <input id="box_max_x" type="number" step="0.1" value="10.0"/>
+          </div>
+          <div class="field">
+            <label for="box_max_y">max_y</label>
+            <input id="box_max_y" type="number" step="0.1" value="10.0"/>
+          </div>
+          <div class="field">
+            <label for="box_max_z">max_z</label>
+            <input id="box_max_z" type="number" step="0.1" value="2.0"/>
+          </div>
+        </div>
+
+        <div class="boxSideBtns">
+          <button id="btnSaveBox" onclick="saveBox()">保存</button>
+          <button id="btnReloadBox" onclick="loadBox()">读取</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 三按钮同一行 -->
+    <div class="btnRow">
+      <button id="btnStartNodes" onclick="startNodes()">启动探索</button>
+      <button id="btnStopNodes" onclick="stopNodes()">关闭探索</button>
+      <button id="btnStartMission" onclick="startMission()">开始探索</button>
+    </div>
+
+    <div id="msg"></div>
+  </div>
+
+  <div id="nav">
+    <button class="active" onclick="go('/')">状态</button>
+    <button onclick="go('/explore')">探索</button>
+    <button onclick="go('/map')">地图</button>
+  </div>
+
+<script>
+const API = location.origin;
+
+function go(p){ window.location.href = p; }
+
+/* ====== 输出：最多三行 ====== */
+const _log = [];
+function _renderLog(){ document.getElementById("msg").innerText = _log.slice(-3).join("\n"); }
+function setMsg(t){
+  _log.length = 0;
+  if(t && String(t).trim()!=="") _log.push(String(t));
+  _renderLog();
+}
+function addMsg(t){
+  if(!t) return;
+  for(const line of String(t).split("\n")){
+    if(line.trim()==="") continue;
+    _log.push(line);
+  }
+  while(_log.length > 3) _log.shift();
+  _renderLog();
+}
+
+/* ====== 网络：带超时 ====== */
+async function fetchJson(url, {method="GET", body=null, timeoutMs=12000}={}){
+  const ac = new AbortController();
+  const t = setTimeout(()=>ac.abort(), timeoutMs);
+  try{
+    const opt = {method, signal: ac.signal, cache:"no-store"};
+    if(method !== "GET"){
+      opt.headers = {"Content-Type":"application/json"};
+      opt.body = body ? JSON.stringify(body) : "{}";
+    }
+    const r = await fetch(url, opt);
+    const txt = await r.text();
+    if(!r.ok) throw new Error(`${r.status} ${txt}`);
+    return txt ? JSON.parse(txt) : {};
+  } finally {
+    clearTimeout(t);
+  }
+}
+
+/* ====== 探索范围：读取/保存 ====== */
+const BOX_KEYS = ["box_min_x","box_min_y","box_min_z","box_max_x","box_max_y","box_max_z"];
+
+function readBoxFromUI(){
+  const o = {};
+  for(const k of BOX_KEYS){
+    const v = parseFloat(document.getElementById(k).value);
+    if(Number.isNaN(v)) throw new Error(`参数 ${k} 不是数字`);
+    o[k] = v;
+  }
+  if(!(o.box_min_x < o.box_max_x && o.box_min_y < o.box_max_y && o.box_min_z < o.box_max_z)){
+    throw new Error("范围非法：min 必须小于 max");
+  }
+  return o;
+}
+
+async function loadBox(){
+  try{
+    const j = await fetchJson(`${API}/api/exploration/box`, {timeoutMs: 3000});
+    for(const k of BOX_KEYS){
+      if(j[k] != null) document.getElementById(k).value = j[k];
+    }
+    addMsg("范围已读取 ✅");
+  }catch(e){
+    addMsg("读取失败 ❌");
+    addMsg(e.name==="AbortError" ? "API 超时" : String(e));
+  }
+}
+
+async function saveBox(){
+  try{
+    const body = readBoxFromUI();
+    const j = await fetchJson(`${API}/api/exploration/box`, {
+      method:"POST",
+      body,
+      timeoutMs: 4000
+    });
+    if(j.ok === false){
+      addMsg("保存失败 ❌");
+    }else{
+      addMsg("已保存 ✅");
+    }
+    return true;
+  }catch(e){
+    addMsg("保存失败 ❌");
+    addMsg(e.name==="AbortError" ? "API 超时" : String(e));
+    return false;
+  }
+}
+
+/* ====== 遥控器：方向键在可操作按钮之间移动焦点 ====== */
+(function setupDpad(){
+  const focusables = () => Array.from(document.querySelectorAll(".boxSideBtns button, .btnRow button"));
+  let idx = 0;
+
+  window.addEventListener("load", ()=>{
+    const f = focusables();
+    if(f[0]) f[0].focus();
+  });
+
+  document.addEventListener("keydown", (e)=>{
+    const f = focusables();
+    if(!f.length) return;
+
+    if(e.key === "ArrowDown"){ idx = Math.min(f.length-1, idx+1); f[idx].focus(); e.preventDefault(); }
+    if(e.key === "ArrowUp"){ idx = Math.max(0, idx-1); f[idx].focus(); e.preventDefault(); }
+
+    if(e.key === "ArrowLeft" || e.key === "ArrowRight"){
+      const navBtns = Array.from(document.querySelectorAll("#nav button"));
+      const active = document.activeElement;
+      if(navBtns.includes(active)){
+        let i = navBtns.indexOf(active);
+        i += (e.key === "ArrowRight" ? 1 : -1);
+        i = (i + navBtns.length) % navBtns.length;
+        navBtns[i].focus();
+        e.preventDefault();
+      }else{
+        navBtns[0].focus();
+        e.preventDefault();
+      }
+    }
+  });
+})();
+
+/* ====== 操作按钮防重入 ====== */
+let busy = false;
+function setButtonsDisabled(v){
+  for(const b of document.querySelectorAll("button")) b.disabled = v;
+}
+
+async function startNodes(){
+  if(busy) return setMsg("忙：请稍等…");
+  busy = true; setButtonsDisabled(true);
+  try{
+    setMsg("启动中…");
+    const r = await fetchJson(`${API}/api/exploration/start_nodes`, {method:"POST"});
+    setMsg(r.ok ? "启动完成 ✅" : "启动失败 ❌");
+    if(!r.ok) addMsg(r.err || r.out || "");
+  }catch(e){
+    setMsg(e.name==="AbortError" ? "启动超时 ❌" : "启动失败 ❌");
+    addMsg(String(e));
+  }finally{
+    busy=false; setButtonsDisabled(false);
+  }
+}
+
+async function stopNodes(){
+  if(busy) return setMsg("忙：请稍等…");
+  busy = true; setButtonsDisabled(true);
+  try{
+    setMsg("关闭中…");
+    await fetchJson(`${API}/api/exploration/stop_nodes`, {method:"POST"});
+    setMsg("已关闭 ✅");
+  }catch(e){
+    setMsg(e.name==="AbortError" ? "关闭超时 ❌" : "关闭失败 ❌");
+    addMsg(String(e));
+  }finally{
+    busy=false; setButtonsDisabled(false);
+  }
+}
+
+async function startMission(){
+  if(busy) return setMsg("忙：请稍等…");
+  busy = true; setButtonsDisabled(true);
+  try{
+    setMsg("保存范围…");
+    const ok = await saveBox();
+    if(!ok){ setMsg("保存失败 ❌"); return; }
+
+    setMsg("开始探索请求中…");
+    const r = await fetchJson(`${API}/api/mission/start`, {
+      method:"POST",
+      body: {hold_seconds:2.0, setpoint_rate_hz:20.0, mode:"OFFBOARD", arm:true},
+      timeoutMs: 20000
+    });
+    setMsg(r.ok ? "已请求 ✅" : "请求失败 ❌");
+    addMsg(r.out || r.err || "");
+  }catch(e){
+    setMsg(e.name==="AbortError" ? "请求超时 ❌" : "请求失败 ❌");
+    addMsg(String(e));
+  }finally{
+    busy=false; setButtonsDisabled(false);
+  }
+}
+
+/* ====== 顶部状态栏 + 位置显示 ====== */
+function fmt2(x){
+  if(x == null || Number.isNaN(x)) return "--";
+  return Number(x).toFixed(2);
+}
+function fmt1(x){
+  if(x == null || Number.isNaN(x)) return "--";
+  return Number(x).toFixed(1);
+}
+function setConnIndicator(text, cls){
+  const dot = document.getElementById("connDot");
+  const t = document.getElementById("connTxt");
+  t.innerText = text;
+  dot.className = "dot " + (cls||"warn");
+}
+function chooseConnText(s){
+  const src = s.source_used || "none";
+  const mavOk = !!s.mavlink_connected && (s.mavlink_ts != null);
+  const rosOk = !!s.mavros_connected;
+
+  if(src === "mavlink" && mavOk) return ["ML", "ok"];
+  if(src === "mavros" && rosOk) return ["MR", "ok"];
+  if(mavOk) return ["ML", "warn"];
+  if(rosOk) return ["MR", "warn"];
+  return ["--", "bad"];
+}
+function setStatusLine(mode, armed, battText){
+  document.getElementById("slMode").innerText = mode || "--";
+
+  const armEl = document.getElementById("slArm");
+  armEl.innerText = armed ? "ARM" : "DIS";
+  armEl.className = armed ? "ok" : "warn";
+
+  document.getElementById("slBatt").innerText = battText || "--";
+}
+function buildPosText(s){
+  // 优先：如果后端未来提供 MAVLink local position，可在这里扩展
+  if(s.odom_xyz){
+    const x = fmt2(s.odom_xyz[0]);
+    const y = fmt2(s.odom_xyz[1]);
+    const z = fmt2(s.odom_xyz[2]);
+    return `x:${x}  y:${y}  z:${z}`;
+  }
+  // 回退：有相对高度也显示
+  if(s.rel_alt_m != null){
+    return `z:${fmt2(s.rel_alt_m)}m`;
+  }
+  return "--";
+}
+
+async function refresh(){
+  try{
+    const s = await fetchJson(`${API}/api/status`, {timeoutMs: 2500});
+
+    const [ct, cls] = chooseConnText(s);
+    setConnIndicator(ct, cls);
+
+    let battText = "--";
+    if(s.battery_percent != null){
+      battText = `${Number(s.battery_percent).toFixed(0)}%`;
+      if(s.battery_voltage != null) battText += ` ${fmt1(s.battery_voltage)}V`;
+    }else if(s.battery_voltage != null){
+      battText = `${fmt1(s.battery_voltage)}V`;
+    }
+
+    setStatusLine(s.mode, !!s.armed, battText);
+
+    document.getElementById("explState").innerText = s.exploration_state || "--";
+    document.getElementById("posText").innerText = buildPosText(s);
+
+  }catch(e){
+    setConnIndicator("!!", "bad");
+    setMsg("状态获取失败 ❌");
+    addMsg(e.name==="AbortError" ? "API 超时" : String(e));
+  }
+}
+
+let refMs = 900;
+let refTimer = setInterval(refresh, refMs);
+document.addEventListener("visibilitychange", ()=>{
+  refMs = document.hidden ? 2000 : 900;
+  clearInterval(refTimer);
+  refTimer = setInterval(refresh, refMs);
+  refresh();
+});
+
+refresh();
+loadBox();
+</script>
+</body>
+</html>

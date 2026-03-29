@@ -1,0 +1,37 @@
+<launch>
+<!-- Launch file for Livox MID360 LiDAR -->
+
+	<arg name="rviz" default="false" />
+
+	<rosparam command="load" file="$(find fast_lio)/config/mid360_color.yaml" />
+	<rosparam command="load" file="$(find fast_lio)/config/camera_gemini335.yaml" />
+
+	<param name="feature_extract_enable" type="bool" value="0"/>
+	<param name="point_filter_num" type="int" value="3"/>
+	<param name="max_iteration" type="int" value="3" />
+	<param name="filter_size_surf" type="double" value="0.2" />
+	<param name="filter_size_map" type="double" value="0.2" />
+	<param name="cube_side_length" type="double" value="1000" />
+	<param name="runtime_pos_log_enable" type="bool" value="0" />
+	
+    <node pkg="fast_lio" type="fastlio_mapping_color" name="laserMapping_color" output="screen">
+    </node>
+
+	<group if="$(arg rviz)">
+	<node launch-prefix="nice" pkg="rviz" type="rviz" name="rviz" args="-d $(find fast_lio)/rviz_cfg/loam_livox.rviz" />
+	</group>
+
+	<node name="freedom" pkg="freedom" type="freedom_node" output="screen">
+        <rosparam ns="/freedom" file="$(find freedom)/config/mid360.yaml" command="load" />
+        
+        <param name="pointcloud_topic" type="string" value="/cloud_registered_body" />
+        <param name="map_tf_frame" type="string" value="camera_init" />
+        <param name="sensor_tf_frame" type="string" value="body" />
+        <param name="save_map_topic" type="string" value="/save_map" />
+        <param name="save_map_path" type="string" value="$(find freedom)/generated_pcd/" />
+        <param name="fov_mask_path" type="string" value="$(find freedom)/config/" />
+        <param name="learn_fov" type="bool" value="false" />
+        <param name="enable_visualization" type="bool" value="true" />
+    </node>
+
+</launch>

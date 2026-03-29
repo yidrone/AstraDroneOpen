@@ -1,0 +1,3 @@
+<launch>
+  <node name="pub_cam_info" pkg="pub_cam_info" type="pub_cam_info.py" output="screen"/>
+</launch>

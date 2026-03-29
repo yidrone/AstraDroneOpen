@@ -1,0 +1,31 @@
+# 坐标系设置
+camera_frame: "camera"  # 与camera_info中的frame_id匹配
+lidar_frame: "livox_frame"
+
+# 外参参数 (T_{lidar}^{camera},camera经过yaw pitch roll旋转得到livox)
+extrinsics:
+  x: 0.0
+  y: -0.12006
+  z: -0.0389
+  roll: 0.0
+  pitch: 0.9599
+  yaw: -1.57
+
+# 话题配置
+topics:
+  image: "/camera/image_raw"               # 输入图像话题
+  cloud: "/livox/lidar"                   # 输入点云话题
+  camera_info: "/camera/camera_info"      # 相机内参话题
+  colored_cloud: "/fused/colored_cloud"   # 输出彩色点云话题
+  depth_image: "/fused/depth_image"       # 输出深度图像话题
+  camera_frame_cloud: "/fused/camera_frame_cloud" # 相机坐标系点云
+
+# 处理参数
+processing:
+  queue_size: 10        # 消息同步队列大小
+  min_range: 0.05        # 最小有效距离 (米)
+  max_range: 20.0       # 最大有效距离
+  voxel_size: 0.08      # 体素滤波大小
+  accumulation_frames: 2
+  target_width: 96
+  target_height: 54

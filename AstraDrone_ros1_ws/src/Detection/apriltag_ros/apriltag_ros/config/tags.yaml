@@ -1,0 +1,77 @@
+# 标签检测定义文件
+
+# ## 通用说明
+#
+# - 所有长度单位均为米(m)
+# - 'size'参数，尺寸详见https://github.com/AprilRobotics/apriltag_ros
+#   详情参见README.md或AprilTag官方指南：https://github.com/AprilRobotics/apriltag/wiki/AprilTag-User-Guide#pose-estimation
+# - 省略号(...)表示前一个元素可以重复多次
+
+# 坐标系定义
+# 原点位置
+
+# 标签组的坐标系原点（(0,0,0)）由用户自定义（通常选在组中心或某个参考点上）。
+
+# 例如：在您的配置中，id:339 位于原点 (0,0,0)。
+
+# 坐标轴方向（右手系）：
+
+# x 轴：水平向右（从标签组正面观察）。
+
+# y 轴：垂直向shang（从标签组正面观察）。
+
+# z 轴：垂直于标签平面向外（指向观察者方向）。
+
+# ## 独立标签定义
+# ### 说明
+#
+# - name字段为可选字段
+#
+# ### 语法格式
+
+# standalone_tags:
+#   [
+#     {id: ID, size: SIZE, name: NAME},
+#     ...
+#   ]
+# ## 标签组定义
+# ### 说明
+#
+# - name字段为可选字段
+# - x, y, z坐标默认值为0，因此为可选字段
+# - qw默认值为1，qx/qy/qz默认值为0，因此均为可选字段
+#
+# ### 语法格式
+#
+# tag_bundles:
+#   [
+#     {
+#       name: 'CUSTOM_BUNDLE_NAME',
+#       layout:
+#         [
+#           {id: ID, size: SIZE, x: X_POS, y: Y_POS, z: Z_POS, qw: QUAT_W_VAL, qx: QUAT_X_VAL, qy: QUAT_Y_VAL, qz: QUAT_Z_VAL},
+#           ...
+#         ]
+#     },
+#     ...
+#   ]
+
+# standalone_tags:
+#   [
+#     {id: 1, size: 0.122, name: "target_1"}
+#   ]
+
+tag_bundles:
+  [
+    {
+      name: "target",
+      layout:
+        [
+          # {id: 1, size: 0.119, x: 0.0, y: 0.0, z: 0.0, qw: 1, qx: 0, qy: 0, qz: 0},
+          # {id: 0, size: 0.039, x: 0.1, y: 0.0, z: 0.0, qw: 1, qx: 0, qy: 0, qz: 0}
+
+          {id: 1, size: 0.122, x: 0.0, y: 0.0, z: 0.0, qw: 1, qx: 0, qy: 0, qz: 0},
+          {id: 0, size: 0.0405, x: 0.1022, y: 0.0, z: 0.0, qw: 1, qx: 0, qy: 0, qz: 0}
+        ]
+    }
+  ]

@@ -1,0 +1,117 @@
+<?xml version='1.0'?>
+<sdf version="1.6">
+  <model name="mid360">
+    <!-- add lidars -->
+    <link name = "lidar_link">
+      <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+      <inertial>
+        <mass>0.001</mass>
+        <inertia>
+          <ixx>0.0001</ixx>
+          <ixy>0.0</ixy>
+          <ixz>0.0</ixz>
+          <iyy>0.0001</iyy>
+          <iyz>0.0</iyz>
+          <izz>0.0001</izz>
+        </inertia>
+      </inertial>
+      <collision name = "lidar_collision">
+        <pose>0 0 0 0 0 3.1415</pose>
+        <geometry>
+          <mesh>
+            <uri>model://mid360/meshes/livox_mid-360-90x.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name = "lidar_visual">
+        <pose>0 0 0 0 0 3.1415</pose>
+        <geometry>
+          <mesh>
+            <uri>model://mid360/meshes/livox_mid-360-90x.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+
+      <sensor type="ray" name="laser_livox">
+        <pose>0 0 0.05 0 0 0</pose>
+        <visualize>false</visualize>
+        <always_on>true</always_on>
+        <update_rate>10</update_rate>
+        <!-- This ray plgin is only for visualization. -->
+        <plugin name="gazebo_ros_laser_controller" filename="liblivox_laser_simulation.so">
+          <robotNamespace/>
+          <ray>
+            <scan>
+              <horizontal>
+                <samples>100</samples>
+                <resolution>1</resolution>
+                <min_angle>-3.1415926535897931</min_angle>
+                <max_angle>3.1415926535897931</max_angle>
+              </horizontal>
+              <vertical>
+                <samples>50</samples>
+                <resolution>1</resolution>
+                <min_angle>-3.1415926535897931</min_angle>
+                <max_angle>3.1415926535897931</max_angle>
+              </vertical>
+            </scan>
+            <range>
+              <min>0.2</min>
+              <max>40</max>
+              <resolution>1</resolution>
+            </range>
+            <noise>
+              <type>gaussian</type>
+              <mean>0.0</mean>
+              <stddev>0.0</stddev>
+            </noise>
+          </ray>
+          <visualize>True</visualize>
+          <samples>20000</samples>
+          <downsample>1</downsample>
+          <csv_file_name>mid360-real-centr.csv</csv_file_name>
+          <publish_pointcloud_type>3</publish_pointcloud_type>
+          <ros_topic>livox/lidar</ros_topic>
+          <frameName>mid360_link</frameName>
+        </plugin>
+      </sensor>
+
+      <!-- IMU Sensor -->
+      <sensor name="imu_sensor" type="imu">
+        <pose>-0.011 -0.02329 0.04412 0 0 0</pose>  <!-- Extrinsic translation -->
+        <always_on>true</always_on>
+        <update_rate>100</update_rate>
+        <imu>
+          <noise>
+            <type>gaussian</type>
+            <!-- Rate noise -->
+            <rate>
+              <mean>0.0</mean>
+              <stddev>0.00017</stddev>  <!-- gyr_cov: 0.1 -->
+              <bias_mean>0.0</bias_mean>
+              <bias_stddev>0.00001</bias_stddev>  <!-- b_gyr_cov: 0.0001 -->
+            </rate>
+            <!-- Accelerometer noise -->
+            <accel>
+              <mean>0.0</mean>
+              <stddev>0.017</stddev>  <!-- acc_cov: 0.1 -->
+              <bias_mean>0.0</bias_mean>
+              <bias_stddev>0.001</bias_stddev>  <!-- b_acc_cov: 0.0001 -->
+            </accel>
+          </noise>
+        </imu>
+        <plugin name="imu_plugin" filename="libgazebo_ros_imu_sensor.so">
+          <namespace>/livox</namespace>
+          <topicName>/livox/imu</topicName>
+          <bodyName>lidar_link</bodyName>
+          <updateRateHZ>200.0</updateRateHZ>
+          <gaussianNoise>0.0</gaussianNoise>
+          <xyzOffset>-0.011 -0.02329 0.04412</xyzOffset>
+          <rpyOffset>0 0 0</rpyOffset>
+          <frameName>lidar_link</frameName>
+        </plugin>
+      </sensor>
+    </link>
+
+  </model>
+</sdf>

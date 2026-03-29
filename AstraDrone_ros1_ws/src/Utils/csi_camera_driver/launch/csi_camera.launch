@@ -1,0 +1,38 @@
+<launch>
+  <node name="csi_camera_node"
+        pkg="csi_camera_driver"
+        type="csi_camera_node"
+        output="screen">
+
+    <!-- 基本参数 -->
+    <param name="frame_id" value="camera_frame"/>
+    <param name="capture_width" value="800"/>
+    <param name="capture_height" value="450"/>
+    <param name="display_width" value="800"/>
+    <param name="display_height" value="450"/>
+    <param name="framerate" value="10"/>
+    <param name="flip_method" value="0"/>
+    <param name="sensor_id" value="0"/>
+    <param name="use_gstreamer_pipeline" value="true"/>
+    <param name="enable_rtsp" value="false"/>
+    <param name="rtsp_port" value="8554"/>
+    <param name="rtsp_mount" value="/csi"/>
+    <param name="rtsp_bitrate" value="2000"/>
+    <param name="rtsp_use_hardware_encoder" value="true"/>
+
+    <!-- 旋转角度（可选）：单位度，支持 0 / ±90 / ±180 / ±270 / 360 等 -->
+    <!-- 正数表示顺时针 90*n 度，负数表示逆时针 -->
+    <!-- 例如：90 -> 顺时针 90 度；-90 -> 逆时针 90 度；180/-180 -> 旋转 180 度 -->
+    <param name="rotate_angle" value="-90"/>
+
+    <!-- camera_info_manager 配置 -->
+    <param name="camera_name" value="csi_cam"/>
+    <param name="camera_info_url" value="package://csi_camera_driver/params/video0.yaml"/>
+
+    <!-- 若标定分辨率与 display_* 不同，自动缩放内参；如不想缩放，设为 false -->
+    <param name="autoscale_camera_info" value="true"/>
+
+    <!-- 可选：直接覆盖 GStreamer 管线便于调试（留空则忽略） -->
+    <!-- <param name="pipeline_override" value="nvarguscamerasrc sensor-id=1 ! ..."/> -->
+  </node>
+</launch>

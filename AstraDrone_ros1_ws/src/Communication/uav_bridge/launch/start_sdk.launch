@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch> 
+
+    <node pkg="uav_bridge" type="uav_bridge_sdk.py" name="uav_bridge_sdk" output="screen">
+
+    </node>
+
+</launch>

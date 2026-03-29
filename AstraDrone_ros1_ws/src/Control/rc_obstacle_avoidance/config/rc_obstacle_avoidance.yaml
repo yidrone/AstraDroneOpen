@@ -1,0 +1,27 @@
+# rc_obstacle_avoidance 参数示例（默认值）。修改后无需改 launch，直接重新加载参数即可。
+rc_topic: /mavros/rc/in               # 遥控输入话题，决定从哪里读取通道值。
+pose_topic: /mavros/local_position/pose # PX4 当前位姿话题，用于在当前位置周围叠加偏移目标。
+goal_topic: /fastplanner/goal         # 发送给 Fast-Planner 的目标位姿话题，影响规划起点与方向。
+planner_pose_topic: /fastplanner/setpoint_position/local # Fast-Planner 输出的避障位姿，转发给 PX4 做位置跟踪。
+planner_vel_topic: /fastplanner/setpoint_velocity/cmd_vel # Fast-Planner 输出的避障速度，作为位姿缺失时的备用指令。
+mavros_position_topic: /mavros/setpoint_position/local   # 给 PX4 的位置指令话题，PX4 将跟随规划好的航迹点。
+mavros_velocity_topic: /mavros/setpoint_velocity/cmd_vel # 给 PX4 的速度指令话题，可让 PX4 用速度模式追随规划轨迹。
+
+# 遥控映射与动作幅度。参数越大，飞机响应越猛烈；越小则动作更柔和。
+roll_channel: 1        # 横滚通道索引（1 开始计数）。左/右摇杆会对应向左/向右平移。
+pitch_channel: 2       # 俯仰通道索引。前/后推拉会对应向前/向后平移。
+throttle_channel: 3    # 油门通道索引。上/下推拉会对应上升/下降。
+yaw_channel: 4         # 偏航通道索引。左/右扭转会对应左转/右转。
+
+deadband: 50           # 摇杆死区 (us)。小于此范围视为 0，可消除中位漂移，使无人机悬停更稳。
+max_xy_step: 2.0       # XY 平移步长 (米)。满杆时规划目标在当前基础上偏移 1 米，避障轨迹更快改变方向。
+max_z_step: 2.0        # Z 轴步长 (米)。满杆抬升/下降 0.6 米，过大可能导致上下冲刺，过小则响应变慢。
+max_yaw_change: 0.35   # 每次命令叠加的偏航角 (弧度)。数值越大，机头转向越快，容易产生急转弯。
+
+publish_rate: 30.0         # RC 目标发布频率 (Hz)。越高越跟手，但链路负载增加。
+command_timeout: 0.5       # 遥控超时时间 (秒)。超过该时间未输入则目标回到当前位置，飞行器会保持悬停。
+use_fastplanner: true      # 是否向 Fast-Planner 发布目标。关闭后只转发规划器输出不会更新新目标。
+
+# 规划器转发开关与超时保护。
+enable_planner_follow: true  # 转发规划器输出给 PX4。关闭时只生成目标，不跟踪规划轨迹。
+planner_cmd_timeout: 0.3     # 规划指令过期时间 (秒)。超时则不转发，防止飞机跟随陈旧轨迹导致漂移。

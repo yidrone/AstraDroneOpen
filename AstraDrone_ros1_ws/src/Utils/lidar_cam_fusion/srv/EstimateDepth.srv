@@ -1,0 +1,8 @@
+# Request
+int32 u
+int32 v
+---
+# Response
+float32 depth
+bool success
+string message

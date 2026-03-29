@@ -1,0 +1,64 @@
+<launch>
+
+  <!-- Launch static transform publishers T = 50ms --> 
+  <node pkg="tf" type="static_transform_publisher" name="tf_baseLink_camera"
+        args="0.05 0 -0.14 -1.5708 0 3.1415 base_link camera 50"/>
+
+  <!-- set to value="gdbserver localhost:10000" for remote debugging -->
+  <arg name="launch_prefix" default="" />
+
+  <!-- configure camera input -->
+  <arg name="image_topic" default="/csi_camera/image_raw" />
+  <arg name="image_info" default="/csi_camera/camera_info" />
+  <!-- <arg name="image_topic" default="/iris_mid360/camera/rgb/image_raw" />
+  <arg name="image_info" default="/iris_mid360/camera/rgb/camera_info" /> -->
+  <arg name="queue_size" default="1" />
+
+  <!-- apriltag_ros continuous detection node -->
+  <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="apriltag_ros_continuous_node" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)">
+    <!-- Remap topics from those used in code to those on the ROS network -->
+    <remap from="image_rect" to="$(arg image_topic)" />
+    <remap from="camera_info" to="$(arg image_info)" />
+
+    <param name="publish_tag_detections_image" type="bool" value="true" /><!-- default: false -->
+    <param name="queue_size" type="int" value="$(arg queue_size)" />
+
+    <!-- load parameters (incl. tag family, tags, etc.) -->
+    <rosparam command="load" file="$(find apriltag_ros)/config/settings.yaml"/>
+    <rosparam command="load" file="$(find apriltag_ros)/config/tags.yaml"/>
+  </node>
+
+  <node name="tf_to_odometry_node" pkg="topic_tf_tran" type="tf2topic" output="screen">
+      
+      <!-- 传入参数 -->
+      <param name="map_frame_id_" value="map" />
+      <param name="base_link_frame_id_" value="target" />
+
+      <!-- 输出参数 -->
+      <param name="odom_pub_topic" value="/apriltag/Odometry/measurements" />
+      <param name="pose_pub_topic" value="/apriltag/PoseStamped/measurements" />
+
+      <!-- 发布模式控制参数 -->
+      <!-- 0: 只发布nav_msgs::Odometry -->
+      <!-- 1: 只发布geometry_msgs::PoseStamped -->
+      <!-- 2: 两者都发布 -->
+      <param name="publish_mode" value="1" />
+  </node>
+
+  <!-- EKF -->
+  <node name="EKF" pkg="target_prediction" type="EKF_prediction" output="screen">
+    <param name="predicted_time" type="double" value="0.5" />
+  </node>
+
+  <!-- 从话题转到tf -->
+  <node name="tf_publisher_node" pkg="topic_tf_tran" type="topic2tf" output="screen">
+
+      <!-- 输入参数 -->
+      <param name="topic_name" value="/EKF/PoseStamped/estimate" />
+
+      <!-- 输出参数 -->
+      <param name="parent_frame" value="map" />
+      <param name="child_frame" value="target_estimate" />
+      <param name="print_flag" value="false" />
+  </node>
+</launch>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<launch>
+    <!-- Set the `use_sim_time` parameter to `true` to use simulation time. -->
+    <param name="use_sim_time" value="true"/>
+
+    <!-- Define the path to the world file. Replace `your_package` with the actual package name. -->
+    <arg name="world_file" default="$(find mavlink_sitl_gazebo)/worlds/iris_hil_vio_simple4.world"/>
+
+    <!-- Launch Gazebo with the specified world file. -->
+    <node name="gazebo" pkg="gazebo_ros" type="gazebo" respawn="false" output="screen" args="--verbose $(arg world_file)">
+        <!-- Load Gazebo's ROS API Plugin -->
+        <param name="use_sim_time" value="true"/>
+    </node>
+
+</launch>
+

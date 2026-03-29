@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<launch>
+  <include file="$(find env_map)/launch/start.launch">
+    <arg name="world" value="$(find env_map)../../../astra_gazebo_worlds/forest.world"/>
+  </include>
+</launch>

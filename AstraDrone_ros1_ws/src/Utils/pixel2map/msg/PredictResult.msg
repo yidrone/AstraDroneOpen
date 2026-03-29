@@ -1,0 +1,11 @@
+int8[] classes_num
+string[] classes_name
+float32[] confidence
+float32[] centre_x
+float32[] centre_y
+float32[] width
+float32[] height
+float32[] top_left_x
+float32[] top_left_y
+float32[] bottom_right_x
+float32[] bottom_right_y

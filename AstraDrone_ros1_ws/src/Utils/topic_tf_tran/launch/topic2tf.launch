@@ -1,0 +1,15 @@
+<launch>
+    <!-- 从话题转到tf -->
+    <node name="tf_publisher_node" pkg="topic_tf_tran" type="topic2tf" output="screen">
+
+        <!-- 输入参数 -->
+        <param name="topic_name" value="/car/local_position/pose" />
+        <!-- <param name="topic_name" value="/mavros/local_position/pose" /> -->
+
+        <!-- 输出参数 -->
+        <param name="parent_frame" value="map" />
+        <param name="child_frame" value="base_link_car" />
+        
+        <param name="print_flag" value="false" />
+    </node>
+</launch>

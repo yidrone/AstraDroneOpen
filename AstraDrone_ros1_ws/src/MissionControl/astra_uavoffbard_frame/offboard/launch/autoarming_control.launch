@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<launch> 
+
+    <arg name="rviz" default="true" />
+    
+    <!-- map -> camera_init : 平移(0,0,0) 旋转(0,0,0,1) -->
+    <node pkg="tf2_ros" type="static_transform_publisher" name="map_to_camera_init"
+        args="0 0 0  0 0 0 1  map  camera_init" />
+
+    <!-- square  or  circle-->
+    <param name="flight_mode" value="circle" />
+    <!-- 启动节点，type参数是可执行文件的名字，name 随便写 -->
+    <node pkg="offboard" type="autoarming_control" name="autoarming_control" output="screen">
+        <param name="target_laps" value="2"/>
+        <param name="hight" value="3.0"/>        <!-- 轨迹飞行高度 -->
+        <param name="takeoff_height" value="1.0"/> <!-- 起飞高度 -->
+        <param name="side_length" value="8.0"/>
+        <param name="speed" value="1.5"/>
+        <remap from="/mavros/state" to="/mavros/state" />
+        <remap from="/mavros/local_position/pose" to="/mavros/local_position/pose" />
+        <remap from="/mavros/setpoint_position/local" to="/mavros/setpoint_position/local" />
+        <remap from="/mavros/set_mode" to="/mavros/set_mode" />
+        <remap from="/mavros/cmd/arming" to="/mavros/cmd/arming" />
+    </node>
+
+    <!-- 可视化 -->
+    <group if="$(arg rviz)">
+        <node launch-prefix="nice" pkg="rviz" type="rviz" name="rviz_a_loam" args="-d $(find offboard)/rviz_config/drone_path.rviz" />
+    </group>
+</launch>

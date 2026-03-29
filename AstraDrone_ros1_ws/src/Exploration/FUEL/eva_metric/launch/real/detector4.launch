@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- apritag detector -->
+    <!-- apriltag_image_new ~ 2025-3-12 新的方案 solvePnP， 之前的函数不能正常使用了 -->
+	<node pkg="eva_metric" name="apriltag_image" type="multi_apriltag_image.py" output="screen">
+        <remap from="/ground_truth/odom" to="/mavros/local_position/odom"/>
+    </node>
+    <!-- # cam_list = ['front', 'left', 'right', 'back']  -->
+
+
+    <!-- 连续数据传入的滑动时间窗口 -->
+    <param name="time_window" value="1.0"/>
+    <!-- 定时器周期， 定时处理检测结果 -->
+    <param name="process_interval" value="0.5"/>
+    <!-- 目标数据偏移量分类阈值 ~ 针对两个目标临近导致同时检测到的情况 -->
+    <param name="position_tolerance" value="2.5"/>
+    <!-- 新目标与已存在目标的gap -->
+    <param name="existing_target_tolerance" value="3.5"/>
+
+    <!-- 默认订阅四个无人机的检测结果数据话题 -->
+    <node pkg="eva_metric" name="apriltag_image_all" type="multi_apriltag_results.py" output="screen">
+    </node> 
+
+
+</launch>

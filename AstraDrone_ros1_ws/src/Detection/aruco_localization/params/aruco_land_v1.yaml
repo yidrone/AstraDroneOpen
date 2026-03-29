@@ -1,0 +1,23 @@
+%YAML:1.0
+---
+# https://github.com/PlusToolkit/aruco 
+# generate
+# https://damianofalcioni.github.io/js-aruco2/samples/marker-creator/marker-creator.html?dictionary=ARUCO_MIP_36h12
+# online detect
+# https://damianofalcioni.github.io/js-aruco2/samples/getusermedia/getusermedia_ARUCO_MIP_36h12.html
+
+
+# https://blog.csdn.net/sinat_16643223/article/details/115212935
+aruco_bc_dict: ARUCO_MIP_36h12
+aruco_bc_nmarkers: 3
+aruco_bc_mInfoType: 0
+aruco_bc_markers:
+# 这里只是布局，尺度对检测结果没有影响
+# 角点，顺时针转圈
+
+   - { id:15, corners:[ [ -220., 220., 0. ], [ 220., 220., 0. ], [ 220.,
+       -220., 0. ], [ -220., -220., 0. ] ] }
+   - { id:46, corners:[ [ -32., 32., 0. ], [ 32., 32., 0. ], [ 32.,
+       -32., 0. ], [ -32., -32., 0. ] ] }   
+   - { id:100, corners:[ [ -4., 4., 0. ], [ 4., 4., 0. ], [ 4.,
+       -4., 0. ], [ -4., -4., 0. ] ] }   

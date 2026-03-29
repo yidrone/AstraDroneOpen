@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch> 
+     <!-- init goal position  -->
+    <rosparam param="goal_init_x">0.0</rosparam> 
+    <rosparam param="goal_init_y">0.0</rosparam> 
+    <rosparam param="goal_init_z">1.0</rosparam> 
+
+    <!-- 启动节点，type参数是可执行文件的名字，name 随便写 -->
+    <node pkg="offboard" type="position_control" name="position_control" output="screen">
+    </node>
+</launch>

@@ -1,0 +1,39 @@
+<launch>
+  <node name="camera_sdk" pkg="camera_sdk" type="camera_sdk_node" output="screen">
+    <!-- 相机参数文件路径 -->
+    <param name="camera_param_yaml" value="package://camera_sdk/param/video0.yaml"/>
+
+    <!-- 视频设备列表-->
+    <param name="video_devices" value="/dev/video1,/dev/video2"/>
+    
+    <!-- 相机配置参数 -->
+    <param name="frame_width" value="640"/>
+    <param name="frame_height" value="480"/>
+    <param name="fourcc" value="MJPG"/>  <!-- 视频编码格式: MJPG, YUYV, H264等 -->
+    <param name="publish_rate" value="30"/>  <!-- 发布频率 (Hz) -->
+    
+    <!-- 图像旋转配置 -->
+    <param name="rotate_angle" value="0"/>  <!-- 旋转角度 (度)，0 表示不旋转 -->
+    
+    <!-- 内参缩放开关 -->
+    <param name="scale_camera_info" value="true"/>  <!-- 是否根据分辨率缩放相机内参 -->
+    
+    <!-- Topic名称配置 -->
+    <param name="image_topic" value="/camera/image_raw"/>
+    <param name="compressed_topic" value="/camera/image_raw/compressed"/>
+    <param name="camera_info_topic" value="/camera/camera_info"/>
+    
+    <!-- 图像保存配置 -->
+    <param name="save_images" value="false"/>  <!-- 是否保存图像 -->
+    <param name="save_frequency" value="3.0"/>  <!-- 保存频率 (Hz) -->
+    <param name="save_dir" value="$(find camera_sdk)/image"/>  <!-- 保存目录 -->
+    
+    <!-- 压缩参数 -->
+    <param name="jpeg_quality" value="80"/>  <!-- JPEG压缩质量 (1-100) -->
+    
+    <!-- 连接参数 -->
+    <param name="max_retries" value="5"/>  <!-- 最大重试次数 -->
+    <param name="retry_delay" value="0.5"/>  <!-- 重试间隔 (秒) -->
+    <param name="connection_timeout" value="3"/>  <!-- 连接超时 (秒) -->
+  </node>
+</launch>

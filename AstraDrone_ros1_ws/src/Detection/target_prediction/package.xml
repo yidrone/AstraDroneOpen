@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>target_prediction</name>
+  <version>0.0.0</version>
+  <description>The target_prediction package</description>
+
+  <maintainer email="sherlock@todo.todo">sherlock</maintainer>
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  
+  <!-- 消息生成和运行时依赖 -->
+  <build_depend>message_generation</build_depend>
+  <exec_depend>message_runtime</exec_depend>
+  
+  <!-- ROS核心依赖 -->
+  <depend>roscpp</depend>
+  <depend>rospy</depend>
+  <depend>std_msgs</depend>
+  
+  <!-- 新旧tf库都需要 -->
+  <depend>tf</depend>          <!-- 旧的tf库 -->
+  <depend>tf2</depend>         <!-- 新的tf2库 -->
+  <depend>tf2_ros</depend>
+  <depend>tf2_eigen</depend>
+  <depend>tf2_geometry_msgs</depend>
+  
+  <!-- 其他依赖 -->
+  <depend>geometry_msgs</depend>
+  <depend>visualization_msgs</depend>
+  
+  <!-- 自定义消息依赖 -->
+  <depend>astra_custom_msgs</depend>
+  
+  <!-- Python脚本依赖（保留） -->
+  <exec_depend>cv_bridge</exec_depend>
+  <exec_depend>image_transport</exec_depend>
+  
+  <!-- Eigen3数学库依赖（系统依赖） -->
+  <build_depend>libeigen3-dev</build_depend>
+
+  <export>
+  </export>
+</package>

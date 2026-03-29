@@ -1,0 +1,7 @@
+<launch>
+    <node name="rtk2local" pkg="rtk2local" type="rtk2local" output="screen">
+        <param name="use_rc_trigger" value="false" />
+        <param name="use_timer_trigger" value="true" />
+        <param name="min_trigger_time" value="120" />
+    </node>
+</launch>

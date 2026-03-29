@@ -1,0 +1,3 @@
+//usr/local/lib/liblivox_sdk_static.a
+//usr/local/include/livox_sdk.h
+//usr/local/include/livox_def.h
