@@ -1,0 +1,30 @@
+{
+  "qr_payload": "lawn_mower,mouse,left",
+  "landing": "left",
+  "placements": [
+    {
+      "slot": "top_left",
+      "class_name": "lawn_mower",
+      "source_file": "target_lawn_mower_01.png",
+      "output_file": "target_top_left.png"
+    },
+    {
+      "slot": "top_right",
+      "class_name": "cattle",
+      "source_file": "target_cattle_01.png",
+      "output_file": "target_top_right.png"
+    },
+    {
+      "slot": "bottom_left",
+      "class_name": "mouse",
+      "source_file": "target_mouse_01.png",
+      "output_file": "target_bottom_left.png"
+    },
+    {
+      "slot": "bottom_right",
+      "class_name": "sweet_pepper",
+      "source_file": "target_sweet_pepper_02.png",
+      "output_file": "target_bottom_right.png"
+    }
+  ]
+}

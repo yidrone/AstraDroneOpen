@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 import rospy
 import cv2
 import time
@@ -7,10 +8,12 @@ from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 from ultralytics import YOLO
 
+_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
 class YOLODetector:
     def __init__(self):
         rospy.init_node('yolo_detection_node', anonymous=True)
-        self.model = YOLO("/home/uav/AstraDrone/AstraDrone_ros1_ws/src/Detection/yolo_detect/pt/yolov8n.pt")
+        self.model = YOLO(os.path.join(_SCRIPT_DIR, "..", "pt", "yolov8n.pt"))
         self.bridge = CvBridge()
         self.image_sub = rospy.Subscriber("/csi_camera/image_raw", Image, self.image_callback)
         # 添加图像发布者

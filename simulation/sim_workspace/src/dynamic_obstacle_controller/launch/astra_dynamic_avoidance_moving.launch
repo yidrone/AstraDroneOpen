@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+  <include file="$(find dynamic_obstacle_controller)/launch/astra_dynamic_avoidance_static.launch"/>
+
+  <node pkg="dynamic_obstacle_controller" name="obstacle_controller" type="obstacle_controller.py" output="screen" respawn="false">
+    <rosparam file="$(find dynamic_obstacle_controller)/config/obstacle_params.yaml" command="load" ns=""/>
+  </node>
+</launch>

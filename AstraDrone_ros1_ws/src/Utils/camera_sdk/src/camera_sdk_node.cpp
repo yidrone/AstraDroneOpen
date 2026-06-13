@@ -179,7 +179,7 @@ public:
         private_nh_.param("camera_info_topic", camera_info_topic_, std::string("/camera/camera_info"));
         private_nh_.param("save_images", save_images_, false);
         private_nh_.param("save_frequency", save_frequency_, 3.0);
-        private_nh_.param("save_dir", save_dir_, std::string("/home/uav/utils_ws/image"));
+        private_nh_.param("save_dir", save_dir_, std::string(std::string(getenv("HOME") ? getenv("HOME") : "/tmp") + "/camera_sdk_images"));
         private_nh_.param("jpeg_quality", jpeg_quality_, 80);
         private_nh_.param("max_retries", max_retries_, 5);
         private_nh_.param("retry_delay", retry_delay_, 0.5);

@@ -33,6 +33,7 @@
 #include "driver_node.h"
 #include "lddc.h"
 #include "lds_lidar.h"
+#include "comm/pub_handler.h"
 
 using namespace livox_ros;
 
@@ -59,6 +60,10 @@ int main(int argc, char **argv) {
   std::string frame_id = "livox_frame";
   bool lidar_bag = true;
   bool imu_bag   = false;
+  // MID360 NoSync 场景默认使用 raw sensor time，避免系统时间跳变影响 FAST-LIO。
+  std::string nosync_time_mode = "steady_raw";
+  std::string nosync_publish_mode = "sensor_time";
+  int min_points_per_frame = 0;
 
   livox_node.GetNode().getParam("xfer_format", xfer_format);
   livox_node.GetNode().getParam("multi_topic", multi_topic);
@@ -68,6 +73,9 @@ int main(int argc, char **argv) {
   livox_node.GetNode().getParam("frame_id", frame_id);
   livox_node.GetNode().getParam("enable_lidar_bag", lidar_bag);
   livox_node.GetNode().getParam("enable_imu_bag", imu_bag);
+  livox_node.GetNode().getParam("nosync_time_mode", nosync_time_mode);
+  livox_node.GetNode().getParam("nosync_publish_mode", nosync_publish_mode);
+  livox_node.GetNode().getParam("min_points_per_frame", min_points_per_frame);
 
   printf("data source:%u.\n", data_src);
 
@@ -80,6 +88,9 @@ int main(int argc, char **argv) {
   }
 
   livox_node.future_ = livox_node.exit_signal_.get_future();
+  // 在启动 SDK 前设置 NoSync 策略，保证首包就使用稳定时间域。
+  pub_handler().SetNoSyncConfig(nosync_time_mode, nosync_publish_mode,
+                                min_points_per_frame < 0 ? 0 : static_cast<uint32_t>(min_points_per_frame));
 
   /** Lidar data distribute control and lidar data source set */
   livox_node.lddc_ptr_ = std::make_unique<Lddc>(xfer_format, multi_topic, data_src, output_type,
@@ -127,6 +138,10 @@ DriverNode::DriverNode(const rclcpp::NodeOptions & node_options)
   double publish_freq = 10.0; /* Hz */
   int output_type = kOutputToRos;
   std::string frame_id;
+  // ROS2 也走同一套 NoSync 策略，保持 ROS1/ROS2 行为一致。
+  std::string nosync_time_mode = "steady_raw";
+  std::string nosync_publish_mode = "sensor_time";
+  int min_points_per_frame = 0;
 
   this->declare_parameter("xfer_format", xfer_format);
   this->declare_parameter("multi_topic", 0);
@@ -136,7 +151,10 @@ DriverNode::DriverNode(const rclcpp::NodeOptions & node_options)
   this->declare_parameter("frame_id", "frame_default");
   this->declare_parameter("user_config_path", "path_default");
   this->declare_parameter("cmdline_input_bd_code", "000000000000001");
-  this->declare_parameter("lvx_file_path", "/home/livox/livox_test.lvx");
+  this->declare_parameter("lvx_file_path", std::string(getenv("HOME") ? getenv("HOME") : "/tmp") + "/livox_test.lvx");
+  this->declare_parameter("nosync_time_mode", "steady_raw");
+  this->declare_parameter("nosync_publish_mode", "sensor_time");
+  this->declare_parameter("min_points_per_frame", 0);
 
   this->get_parameter("xfer_format", xfer_format);
   this->get_parameter("multi_topic", multi_topic);
@@ -144,6 +162,9 @@ DriverNode::DriverNode(const rclcpp::NodeOptions & node_options)
   this->get_parameter("publish_freq", publish_freq);
   this->get_parameter("output_data_type", output_type);
   this->get_parameter("frame_id", frame_id);
+  this->get_parameter("nosync_time_mode", nosync_time_mode);
+  this->get_parameter("nosync_publish_mode", nosync_publish_mode);
+  this->get_parameter("min_points_per_frame", min_points_per_frame);
 
   if (publish_freq > 100.0) {
     publish_freq = 100.0;
@@ -154,6 +175,9 @@ DriverNode::DriverNode(const rclcpp::NodeOptions & node_options)
   }
 
   future_ = exit_signal_.get_future();
+  // 在启动 SDK 前设置 NoSync 策略，保证首包就使用稳定时间域。
+  pub_handler().SetNoSyncConfig(nosync_time_mode, nosync_publish_mode,
+                                min_points_per_frame < 0 ? 0 : static_cast<uint32_t>(min_points_per_frame));
 
   /** Lidar data distribute control and lidar data source set */
   lddc_ptr_ = std::make_unique<Lddc>(xfer_format, multi_topic, data_src, output_type, publish_freq, frame_id);

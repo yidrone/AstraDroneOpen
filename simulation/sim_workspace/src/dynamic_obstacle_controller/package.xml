@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>dynamic_obstacle_controller</name>
+  <version>0.0.1</version>
+  <description>Dynamic obstacle controller for testing obstacle avoidance algorithms</description>
+  <maintainer email="jinmo@todo.todo">jinmo</maintainer>
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>rospy</depend>
+  <depend>geometry_msgs</depend>
+  <depend>gazebo_ros</depend>
+  <depend>mavros</depend>
+
+  <exec_depend>gazebo</exec_depend>
+</package>

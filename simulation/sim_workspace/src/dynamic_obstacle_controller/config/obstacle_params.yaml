@@ -1,0 +1,44 @@
+# Dynamic obstacle configuration
+# 5 obstacles, well spaced, 1.2 m/s (normal walking speed)
+# Avoiding static: House_1(15,0) Oak(8,8)(8,-8)(-5,12) Pine(-8,-6)(-12,4)
+# Model heights: cylinder = 4m, box = 3m
+
+update_rate: 100  # Hz
+
+obstacles:
+  # cyl_1: X-axis linear at y=6, clear of Oak_1(8,8)
+  - name: "obstacle_cylinder_1"
+    type: "linear"
+    axis: [1, 0, 0]
+    amplitude: 3.0
+    speed: 0.8
+    center: [0, 6, 2]
+
+  # cyl_2: Y-axis linear at x=-4, between Pine trees
+  - name: "obstacle_cylinder_2"
+    type: "linear"
+    axis: [0, 1, 0]
+    amplitude: 4.0
+    speed: 0.8
+    center: [-4, 0, 2]
+
+  # cyl_3: diagonal near (5,-5), clear of Oak_2(8,-8)
+  - name: "obstacle_cylinder_3"
+    type: "linear"
+    axis: [0.707, 0.707, 0]
+    amplitude: 3.5
+    speed: 0.8
+    center: [5, -5, 2]
+
+  # box_1: circle at (0,-2), r=3, central open area
+  - name: "obstacle_box_1"
+    type: "circle"
+    radius: 3.0
+    speed: 0.8
+    center: [0, -2, 1.5]
+
+  # box_2: waypoint patrol, left open area
+  - name: "obstacle_box_2"
+    type: "waypoint"
+    waypoints: [[-6, 4], [-10, 2], [-6, 0], [-2, 2], [-6, 4]]
+    speed: 0.8

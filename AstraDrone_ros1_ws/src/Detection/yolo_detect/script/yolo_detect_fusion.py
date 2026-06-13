@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 import rospy
 import cv2
 import time
@@ -11,10 +12,12 @@ from cv_bridge import CvBridge, CvBridgeError
 from ultralytics import YOLO
 import tf2_ros
 
+_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
 class YOLODetector:
     def __init__(self):
         rospy.init_node('yolo_detection_node', anonymous=True)
-        self.model = YOLO("/home/uav/ys_ws/src/yolo_detect/pt/yolov8n.pt")
+        self.model = YOLO(os.path.join(_SCRIPT_DIR, "..", "pt", "yolov8n.pt"))
         self.bridge = CvBridge()
 
         self.camera_info_processed = False

@@ -1,12 +1,15 @@
+import os
 import cv2
 import time
 from ultralytics import YOLO
 
+_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
 # 加载模型
-model = YOLO("/home/uav/ys_ws/src/yolo_detect/pt/yolov8n.pt")
+model = YOLO(os.path.join(_SCRIPT_DIR, "..", "pt", "yolov8n.pt"))
 
 # 读取图片
-image_path = "/home/uav/ys_ws/src/yolo_detect/script/bus.jpg"  # 替换为你的图片路径
+image_path = os.path.join(_SCRIPT_DIR, "bus.jpg")  # 替换为你的图片路径
 frame = cv2.imread(image_path)
 if frame is None:
     raise FileNotFoundError(f"图片 {image_path} 不存在")

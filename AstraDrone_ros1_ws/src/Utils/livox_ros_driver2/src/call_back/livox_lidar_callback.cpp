@@ -24,6 +24,8 @@
 
 #include "livox_lidar_callback.h"
 
+#include "livox_lidar_api.h"
+#include "comm/pub_handler.h"
 #include <string>
 #include <thread>
 #include <iostream>
@@ -38,6 +40,8 @@ void LivoxLidarCallback::LidarInfoChangeCallback(const uint32_t handle,
     return;
   }
   LdsLidar* lds_lidar = static_cast<LdsLidar*>(client_data);
+  // 设备重连或 handle 复用时清掉旧时间域，但保留已发布 stamp 的单调保护。
+  pub_handler().ResetLidarState(handle, "lidar info changed");
 
   LidarDevice* lidar_device = GetLidarDevice(handle, client_data);
   if (lidar_device == nullptr) {
@@ -119,6 +123,8 @@ void LivoxLidarCallback::WorkModeChangedCallback(livox_status status,
     return;
   }
   std::cout << "successfully change work mode, handle: " << handle << std::endl;
+  // 切到 Normal 后采样时间域可能重启，重新 anchor 可避免 NoSync raw 回退。
+  pub_handler().ResetLidarState(handle, "work mode changed to Normal");
   return;
 }
 
@@ -134,13 +140,21 @@ void LivoxLidarCallback::SetDataTypeCallback(livox_status status, uint32_t handl
   LdsLidar* lds_lidar = static_cast<LdsLidar*>(client_data);
 
   if (status == kLivoxLidarStatusSuccess) {
-    std::lock_guard<std::mutex> lock(lds_lidar->config_mutex_);
-    lidar_device->livox_config.set_bits &= ~((uint32_t)(kConfigDataType));
-    if (!lidar_device->livox_config.set_bits) {
-      lidar_device->connect_state = kConnectStateSampling;
+    bool entered_sampling = false;
+    {
+      std::lock_guard<std::mutex> lock(lds_lidar->config_mutex_);
+      lidar_device->livox_config.set_bits &= ~((uint32_t)(kConfigDataType));
+      if (!lidar_device->livox_config.set_bits) {
+        lidar_device->connect_state = kConnectStateSampling;
+        entered_sampling = true;
+      }
+      std::cout << "successfully set data type, handle: " << handle
+                << ", set_bit: " << lidar_device->livox_config.set_bits << std::endl;
     }
-    std::cout << "successfully set data type, handle: " << handle
-              << ", set_bit: " << lidar_device->livox_config.set_bits << std::endl;
+    if (entered_sampling) {
+      // 配置完成进入采样态时，丢弃配置阶段残留的小帧/混合帧。
+      pub_handler().ResetLidarState(handle, "sampling state entered after data type config");
+    }
   } else if (status == kLivoxLidarStatusTimeout) {
     const UserLivoxLidarConfig& config = lidar_device->livox_config;
     SetLivoxLidarPclDataType(handle, static_cast<LivoxLidarPointDataType>(config.pcl_data_type),
@@ -167,13 +181,21 @@ void LivoxLidarCallback::SetPatternModeCallback(livox_status status, uint32_t ha
   LdsLidar* lds_lidar = static_cast<LdsLidar*>(client_data);
 
   if (status == kLivoxLidarStatusSuccess) {
-    std::lock_guard<std::mutex> lock(lds_lidar->config_mutex_);
-    lidar_device->livox_config.set_bits &= ~((uint32_t)(kConfigScanPattern));
-    if (!lidar_device->livox_config.set_bits) {
-      lidar_device->connect_state = kConnectStateSampling;
+    bool entered_sampling = false;
+    {
+      std::lock_guard<std::mutex> lock(lds_lidar->config_mutex_);
+      lidar_device->livox_config.set_bits &= ~((uint32_t)(kConfigScanPattern));
+      if (!lidar_device->livox_config.set_bits) {
+        lidar_device->connect_state = kConnectStateSampling;
+        entered_sampling = true;
+      }
+      std::cout << "successfully set pattern mode, handle: " << handle
+                << ", set_bit: " << lidar_device->livox_config.set_bits << std::endl;
     }
-    std::cout << "successfully set pattern mode, handle: " << handle
-              << ", set_bit: " << lidar_device->livox_config.set_bits << std::endl;
+    if (entered_sampling) {
+      // 配置完成进入采样态时，丢弃配置阶段残留的小帧/混合帧。
+      pub_handler().ResetLidarState(handle, "sampling state entered after pattern config");
+    }
   } else if (status == kLivoxLidarStatusTimeout) {
     const UserLivoxLidarConfig& config = lidar_device->livox_config;
     SetLivoxLidarScanPattern(handle, static_cast<LivoxLidarScanPattern>(config.pattern_mode),
@@ -200,13 +222,21 @@ void LivoxLidarCallback::SetBlindSpotCallback(livox_status status, uint32_t hand
   LdsLidar* lds_lidar = static_cast<LdsLidar*>(client_data);
 
   if (status == kLivoxLidarStatusSuccess) {
-    std::lock_guard<std::mutex> lock(lds_lidar->config_mutex_);
-    lidar_device->livox_config.set_bits &= ~((uint32_t)(kConfigBlindSpot));
-    if (!lidar_device->livox_config.set_bits) {
-      lidar_device->connect_state = kConnectStateSampling;
+    bool entered_sampling = false;
+    {
+      std::lock_guard<std::mutex> lock(lds_lidar->config_mutex_);
+      lidar_device->livox_config.set_bits &= ~((uint32_t)(kConfigBlindSpot));
+      if (!lidar_device->livox_config.set_bits) {
+        lidar_device->connect_state = kConnectStateSampling;
+        entered_sampling = true;
+      }
+      std::cout << "successfully set blind spot, handle: " << handle
+                << ", set_bit: " << lidar_device->livox_config.set_bits << std::endl;
     }
-    std::cout << "successfully set blind spot, handle: " << handle
-              << ", set_bit: " << lidar_device->livox_config.set_bits << std::endl;
+    if (entered_sampling) {
+      // 配置完成进入采样态时，丢弃配置阶段残留的小帧/混合帧。
+      pub_handler().ResetLidarState(handle, "sampling state entered after blind spot config");
+    }
   } else if (status == kLivoxLidarStatusTimeout) {
     const UserLivoxLidarConfig& config = lidar_device->livox_config;
     SetLivoxLidarBlindSpot(handle, config.blind_spot_set,
@@ -233,13 +263,21 @@ void LivoxLidarCallback::SetDualEmitCallback(livox_status status, uint32_t handl
 
   LdsLidar* lds_lidar = static_cast<LdsLidar*>(client_data);
   if (status == kLivoxLidarStatusSuccess) {
-    std::lock_guard<std::mutex> lock(lds_lidar->config_mutex_);
-    lidar_device->livox_config.set_bits &= ~((uint32_t)(kConfigDualEmit));
-    if (!lidar_device->livox_config.set_bits) {
-      lidar_device->connect_state = kConnectStateSampling;
+    bool entered_sampling = false;
+    {
+      std::lock_guard<std::mutex> lock(lds_lidar->config_mutex_);
+      lidar_device->livox_config.set_bits &= ~((uint32_t)(kConfigDualEmit));
+      if (!lidar_device->livox_config.set_bits) {
+        lidar_device->connect_state = kConnectStateSampling;
+        entered_sampling = true;
+      }
+      std::cout << "successfully set dual emit mode, handle: " << handle
+                << ", set_bit: " << lidar_device->livox_config.set_bits << std::endl;
     }
-    std::cout << "successfully set dual emit mode, handle: " << handle
-              << ", set_bit: " << lidar_device->livox_config.set_bits << std::endl;
+    if (entered_sampling) {
+      // 配置完成进入采样态时，丢弃配置阶段残留的小帧/混合帧。
+      pub_handler().ResetLidarState(handle, "sampling state entered after dual emit config");
+    }
   } else if (status == kLivoxLidarStatusTimeout) {
     const UserLivoxLidarConfig& config = lidar_device->livox_config;
     SetLivoxLidarDualEmit(handle, config.dual_emit_en,

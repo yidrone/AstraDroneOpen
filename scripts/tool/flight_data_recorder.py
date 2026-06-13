@@ -44,7 +44,7 @@ class FlightDataRecorder:
         self.image_save_interval = float(rospy.get_param("~image_save_interval", 1.0))  # seconds
 
         # Output directory base
-        self.output_root = rospy.get_param("~output_root", os.path.expanduser("/home/luli/AstraDrone/scripts/tools/flight_logs"))
+        self.output_root = rospy.get_param("~output_root", os.path.expanduser("~/.ros/astradrone/flight_logs"))
         ensure_dir(self.output_root)
 
         # Whether to store velocities too

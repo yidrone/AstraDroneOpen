@@ -1,0 +1,626 @@
+<?xml version='1.0'?>
+<sdf version='1.7'>
+  <model name='craic_2026_arena'>
+
+    <model name='competition_floor'>
+      <static>1</static>
+      <pose>3 0 0.005 0 0 0</pose>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <box>
+              <size>9 6 0.01</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact><ode/></contact>
+            <bounce/>
+            <friction>
+              <torsional><ode/></torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>9 6 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.88 0.88 0.88 1</ambient>
+            <diffuse>0.88 0.88 0.88 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name='north_wall'>
+      <static>1</static>
+      <pose>3 3 1.5 0 0 0</pose>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <box>
+              <size>9 0.05 3</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact><ode/></contact>
+            <bounce/>
+            <friction>
+              <torsional><ode/></torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>9 0.05 3</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.8 0.85 0.9 0.35</ambient>
+            <diffuse>0.8 0.85 0.9 0.35</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+          <transparency>0.55</transparency>
+        </visual>
+      </link>
+    </model>
+    <model name='south_wall'>
+      <static>1</static>
+      <pose>3 -3 1.5 0 0 0</pose>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <box>
+              <size>9 0.05 3</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact><ode/></contact>
+            <bounce/>
+            <friction>
+              <torsional><ode/></torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>9 0.05 3</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.8 0.85 0.9 0.35</ambient>
+            <diffuse>0.8 0.85 0.9 0.35</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+          <transparency>0.55</transparency>
+        </visual>
+      </link>
+    </model>
+    <model name='west_wall'>
+      <static>1</static>
+      <pose>-1.5 0 1.5 0 0 0</pose>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <box>
+              <size>0.05 6 3</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact><ode/></contact>
+            <bounce/>
+            <friction>
+              <torsional><ode/></torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>0.05 6 3</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.8 0.85 0.9 0.35</ambient>
+            <diffuse>0.8 0.85 0.9 0.35</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+          <transparency>0.55</transparency>
+        </visual>
+      </link>
+    </model>
+    <model name='east_wall'>
+      <static>1</static>
+      <pose>7.5 0 1.5 0 0 0</pose>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <box>
+              <size>0.05 6 3</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact><ode/></contact>
+            <bounce/>
+            <friction>
+              <torsional><ode/></torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>0.05 6 3</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.8 0.85 0.9 0.35</ambient>
+            <diffuse>0.8 0.85 0.9 0.35</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+          <transparency>0.55</transparency>
+        </visual>
+      </link>
+    </model>
+    <model name='obstacle_cube'>
+      <static>1</static>
+      <pose>4.3 0 0 0 0 0</pose>
+      <link name='link'>
+
+        <collision name='collision_0'>
+          <pose>0 0 0.3 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.6 0.6 0.6</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact><ode/></contact>
+            <bounce/>
+            <friction>
+              <torsional><ode/></torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='collision_1'>
+          <pose>0 0 0.9 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.6 0.6 0.6</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact><ode/></contact>
+            <bounce/>
+            <friction>
+              <torsional><ode/></torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='collision_2'>
+          <pose>0 0 1.5 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.6 0.6 0.6</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact><ode/></contact>
+            <bounce/>
+            <friction>
+              <torsional><ode/></torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='collision_3'>
+          <pose>0 0 2.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.6 0.6 0.6</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact><ode/></contact>
+            <bounce/>
+            <friction>
+              <torsional><ode/></torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='segment_0'>
+          <pose>0 0 0.3 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.6 0.6 0.6</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.98 0.8 0.2 1</ambient>
+            <diffuse>0.98 0.8 0.2 1</diffuse>
+            <specular>0.18 0.18 0.18 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+        <visual name='segment_1'>
+          <pose>0 0 0.9 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.6 0.6 0.6</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.22 0.22 0.24 1</ambient>
+            <diffuse>0.22 0.22 0.24 1</diffuse>
+            <specular>0.18 0.18 0.18 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+        <visual name='segment_2'>
+          <pose>0 0 1.5 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.6 0.6 0.6</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.88 0.27 0.24 1</ambient>
+            <diffuse>0.88 0.27 0.24 1</diffuse>
+            <specular>0.18 0.18 0.18 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+        <visual name='segment_3'>
+          <pose>0 0 2.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.6 0.6 0.6</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.35 0.4 0.95 1</ambient>
+            <diffuse>0.35 0.4 0.95 1</diffuse>
+            <specular>0.18 0.18 0.18 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <link name='ring_movement_zone'>
+      <pose>6 -1.6 0 0 0 0</pose>
+      <visual name='visual'>
+        <pose>0 0 0.021 0 0 0</pose>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>2.4 1.6</size>
+          </plane>
+        </geometry>
+          <material>
+            <script>
+              <uri>model://craic_2026_arena/materials/scripts</uri>
+              <uri>model://craic_2026_arena/materials/textures</uri>
+              <name>CRAIC/ZoneOverlay</name>
+            </script>
+          </material>
+      </visual>
+    </link>
+    <link name='takeoff_pad'>
+      <pose>0 0 0 0 0 -1.570796</pose>
+      <collision name='collision'>
+        <pose>0 0 0.01 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.8 0.8 0.02</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name='marker_visual'>
+        <pose>0 0 0.022 0 0 0</pose>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>0.8 0.8</size>
+          </plane>
+        </geometry>
+          <material>
+            <script>
+              <uri>model://craic_2026_arena/materials/scripts</uri>
+              <uri>model://craic_2026_arena/materials/textures</uri>
+              <name>CRAIC/TakeoffPad</name>
+            </script>
+          </material>
+      </visual>
+    </link>
+    <link name='landing_right_pad'>
+      <pose>0 -1.6 0 0 0 -1.570796</pose>
+      <collision name='collision'>
+        <pose>0 0 0.01 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.8 0.8 0.02</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name='marker_visual'>
+        <pose>0 0 0.022 0 0 0</pose>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>0.8 0.8</size>
+          </plane>
+        </geometry>
+          <material>
+            <script>
+              <uri>model://craic_2026_arena/materials/scripts</uri>
+              <uri>model://craic_2026_arena/materials/textures</uri>
+              <name>CRAIC/LandingRight</name>
+            </script>
+          </material>
+      </visual>
+    </link>
+    <link name='landing_left_pad'>
+      <pose>0 1.6 0 0 0 -1.570796</pose>
+      <collision name='collision'>
+        <pose>0 0 0.01 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.8 0.8 0.02</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name='marker_visual'>
+        <pose>0 0 0.022 0 0 0</pose>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>0.8 0.8</size>
+          </plane>
+        </geometry>
+          <material>
+            <script>
+              <uri>model://craic_2026_arena/materials/scripts</uri>
+              <uri>model://craic_2026_arena/materials/textures</uri>
+              <name>CRAIC/LandingLeft</name>
+            </script>
+          </material>
+      </visual>
+    </link>
+    <link name='qr_code_marker'>
+      <pose>1.8 0 0 0 0 0</pose>
+      <collision name='collision'>
+        <pose>0 0 0.01 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.2 0.2 0.02</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name='marker_visual'>
+        <pose>0 0 0.023 0 0 0</pose>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>0.2 0.2</size>
+          </plane>
+        </geometry>
+          <material>
+            <script>
+              <uri>model://craic_2026_arena/materials/scripts</uri>
+              <uri>model://craic_2026_arena/materials/textures</uri>
+              <name>CRAIC/QRCode</name>
+            </script>
+          </material>
+      </visual>
+    </link>
+    <link name='target_top_left'>
+      <pose>3.6 -1.6 0 0 0 0</pose>
+      <collision name='collision'>
+        <pose>0 0 0.01 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.8 0.8 0.02</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name='marker_visual'>
+        <pose>0 0 0.022 0 0 0</pose>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>0.8 0.8</size>
+          </plane>
+        </geometry>
+          <material>
+            <script>
+              <uri>model://craic_2026_arena/materials/scripts</uri>
+              <uri>model://craic_2026_arena/materials/textures</uri>
+              <name>CRAIC/TargetTopLeft</name>
+            </script>
+          </material>
+      </visual>
+    </link>
+    <link name='target_top_right'>
+      <pose>1.8 -1.6 0 0 0 0</pose>
+      <collision name='collision'>
+        <pose>0 0 0.01 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.8 0.8 0.02</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name='marker_visual'>
+        <pose>0 0 0.022 0 0 0</pose>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>0.8 0.8</size>
+          </plane>
+        </geometry>
+          <material>
+            <script>
+              <uri>model://craic_2026_arena/materials/scripts</uri>
+              <uri>model://craic_2026_arena/materials/textures</uri>
+              <name>CRAIC/TargetTopRight</name>
+            </script>
+          </material>
+      </visual>
+    </link>
+    <link name='target_bottom_left'>
+      <pose>3.6 1.6 0 0 0 0</pose>
+      <collision name='collision'>
+        <pose>0 0 0.01 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.8 0.8 0.02</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name='marker_visual'>
+        <pose>0 0 0.022 0 0 0</pose>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>0.8 0.8</size>
+          </plane>
+        </geometry>
+          <material>
+            <script>
+              <uri>model://craic_2026_arena/materials/scripts</uri>
+              <uri>model://craic_2026_arena/materials/textures</uri>
+              <name>CRAIC/TargetBottomLeft</name>
+            </script>
+          </material>
+      </visual>
+    </link>
+    <link name='target_bottom_right'>
+      <pose>1.8 1.6 0 0 0 0</pose>
+      <collision name='collision'>
+        <pose>0 0 0.01 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.8 0.8 0.02</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name='marker_visual'>
+        <pose>0 0 0.022 0 0 0</pose>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>0.8 0.8</size>
+          </plane>
+        </geometry>
+          <material>
+            <script>
+              <uri>model://craic_2026_arena/materials/scripts</uri>
+              <uri>model://craic_2026_arena/materials/textures</uri>
+              <name>CRAIC/TargetBottomRight</name>
+            </script>
+          </material>
+      </visual>
+    </link>
+    <link name='special_target'>
+      <pose>6 1 0 0 0 0</pose>
+      <collision name='collision'>
+        <pose>0 0 0.01 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.8 0.8 0.02</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name='marker_visual'>
+        <pose>0 0 0.022 0 0 0</pose>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>0.8 0.8</size>
+          </plane>
+        </geometry>
+          <material>
+            <script>
+              <uri>model://craic_2026_arena/materials/scripts</uri>
+              <uri>model://craic_2026_arena/materials/textures</uri>
+              <name>CRAIC/SpecialTarget</name>
+            </script>
+          </material>
+      </visual>
+      <visual name='light_red_1'>
+        <pose>-0.28 -0.28 0.07 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.05</radius>
+          </sphere>
+        </geometry>
+          <material>
+            <ambient>0.9 0.15 0.15 1</ambient>
+            <diffuse>0.9 0.15 0.15 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+            <emissive>0.6 0.05 0.05 1</emissive>
+          </material>
+      </visual>
+      <visual name='light_blue_1'>
+        <pose>-0.28 0.28 0.07 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.05</radius>
+          </sphere>
+        </geometry>
+          <material>
+            <ambient>0.2 0.4 0.95 1</ambient>
+            <diffuse>0.2 0.4 0.95 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+            <emissive>0.05 0.15 0.6 1</emissive>
+          </material>
+      </visual>
+      <visual name='light_red_2'>
+        <pose>0.28 0.28 0.07 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.05</radius>
+          </sphere>
+        </geometry>
+          <material>
+            <ambient>0.9 0.15 0.15 1</ambient>
+            <diffuse>0.9 0.15 0.15 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+            <emissive>0.6 0.05 0.05 1</emissive>
+          </material>
+      </visual>
+      <visual name='light_blue_2'>
+        <pose>0.28 -0.28 0.07 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.05</radius>
+          </sphere>
+        </geometry>
+          <material>
+            <ambient>0.2 0.4 0.95 1</ambient>
+            <diffuse>0.2 0.4 0.95 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+            <emissive>0.05 0.15 0.6 1</emissive>
+          </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

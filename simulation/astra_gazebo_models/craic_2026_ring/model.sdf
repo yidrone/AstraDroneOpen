@@ -1,0 +1,440 @@
+<?xml version='1.0'?>
+<sdf version='1.7'>
+  <model name='craic_2026_ring'>
+    <static>1</static>
+    <link name='ring_frame'>
+      <pose>0 0 1.6 0 0 0</pose>
+
+      <collision name='ring_collision_0'>
+        <pose>0.525 0 0 0 1.570796 0</pose>
+        <geometry>
+          <box>
+            <size>0.137445 0.04 0.15</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <collision name='ring_collision_1'>
+        <pose>0.507111 0 0.13588 0 1.832596 0</pose>
+        <geometry>
+          <box>
+            <size>0.137445 0.04 0.15</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <collision name='ring_collision_2'>
+        <pose>0.454663 0 0.2625 0 2.094395 0</pose>
+        <geometry>
+          <box>
+            <size>0.137445 0.04 0.15</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <collision name='ring_collision_3'>
+        <pose>0.371231 0 0.371231 0 2.356194 0</pose>
+        <geometry>
+          <box>
+            <size>0.137445 0.04 0.15</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <collision name='ring_collision_4'>
+        <pose>0.2625 0 0.454663 0 2.617994 0</pose>
+        <geometry>
+          <box>
+            <size>0.137445 0.04 0.15</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <collision name='ring_collision_5'>
+        <pose>0.13588 0 0.507111 0 2.879793 0</pose>
+        <geometry>
+          <box>
+            <size>0.137445 0.04 0.15</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <collision name='ring_collision_6'>
+        <pose>0 0 0.525 0 3.141593 0</pose>
+        <geometry>
+          <box>
+            <size>0.137445 0.04 0.15</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <collision name='ring_collision_7'>
+        <pose>-0.13588 0 0.507111 0 3.403392 0</pose>
+        <geometry>
+          <box>
+            <size>0.137445 0.04 0.15</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <collision name='ring_collision_8'>
+        <pose>-0.2625 0 0.454663 0 3.665191 0</pose>
+        <geometry>
+          <box>
+            <size>0.137445 0.04 0.15</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <collision name='ring_collision_9'>
+        <pose>-0.371231 0 0.371231 0 3.926991 0</pose>
+        <geometry>
+          <box>
+            <size>0.137445 0.04 0.15</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <collision name='ring_collision_10'>
+        <pose>-0.454663 0 0.2625 0 4.18879 0</pose>
+        <geometry>
+          <box>
+            <size>0.137445 0.04 0.15</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <collision name='ring_collision_11'>
+        <pose>-0.507111 0 0.13588 0 4.45059 0</pose>
+        <geometry>
+          <box>
+            <size>0.137445 0.04 0.15</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <collision name='ring_collision_12'>
+        <pose>-0.525 0 0 0 4.712389 0</pose>
+        <geometry>
+          <box>
+            <size>0.137445 0.04 0.15</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <collision name='ring_collision_13'>
+        <pose>-0.507111 0 -0.13588 0 4.974188 0</pose>
+        <geometry>
+          <box>
+            <size>0.137445 0.04 0.15</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <collision name='ring_collision_14'>
+        <pose>-0.454663 0 -0.2625 0 5.235988 0</pose>
+        <geometry>
+          <box>
+            <size>0.137445 0.04 0.15</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <collision name='ring_collision_15'>
+        <pose>-0.371231 0 -0.371231 0 5.497787 0</pose>
+        <geometry>
+          <box>
+            <size>0.137445 0.04 0.15</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <collision name='ring_collision_16'>
+        <pose>-0.2625 0 -0.454663 0 5.759587 0</pose>
+        <geometry>
+          <box>
+            <size>0.137445 0.04 0.15</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <collision name='ring_collision_17'>
+        <pose>-0.13588 0 -0.507111 0 6.021386 0</pose>
+        <geometry>
+          <box>
+            <size>0.137445 0.04 0.15</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <collision name='ring_collision_18'>
+        <pose>-0 0 -0.525 0 6.283185 0</pose>
+        <geometry>
+          <box>
+            <size>0.137445 0.04 0.15</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <collision name='ring_collision_19'>
+        <pose>0.13588 0 -0.507111 0 6.544985 0</pose>
+        <geometry>
+          <box>
+            <size>0.137445 0.04 0.15</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <collision name='ring_collision_20'>
+        <pose>0.2625 0 -0.454663 0 6.806784 0</pose>
+        <geometry>
+          <box>
+            <size>0.137445 0.04 0.15</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <collision name='ring_collision_21'>
+        <pose>0.371231 0 -0.371231 0 7.068583 0</pose>
+        <geometry>
+          <box>
+            <size>0.137445 0.04 0.15</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <collision name='ring_collision_22'>
+        <pose>0.454663 0 -0.2625 0 7.330383 0</pose>
+        <geometry>
+          <box>
+            <size>0.137445 0.04 0.15</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <collision name='ring_collision_23'>
+        <pose>0.507111 0 -0.13588 0 7.592182 0</pose>
+        <geometry>
+          <box>
+            <size>0.137445 0.04 0.15</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <visual name='ring_visual'>
+        <geometry>
+          <mesh>
+            <uri>model://craic_2026_ring/meshes/ring.obj</uri>
+          </mesh>
+        </geometry>
+          <material>
+            <ambient>0.8 0.82 0.84 1</ambient>
+            <diffuse>0.8 0.82 0.84 1</diffuse>
+            <specular>0.9 0.9 0.9 1</specular>
+            <emissive>0.02 0.02 0.02 1</emissive>
+          </material>
+      </visual>
+    </link>
+
+    <link name='ring_support_1'>
+      <pose>-0.42 0 0.5 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <cylinder>
+            <radius>0.018</radius>
+            <length>1</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name='visual'>
+        <geometry>
+          <cylinder>
+            <radius>0.018</radius>
+            <length>1</length>
+          </cylinder>
+        </geometry>
+          <material>
+            <ambient>0.42 0.44 0.46 1</ambient>
+            <diffuse>0.42 0.44 0.46 1</diffuse>
+            <specular>0.55 0.55 0.55 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+      </visual>
+    </link>
+    <link name='ring_support_foot_1'>
+      <pose>-0.42 0 0.012 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <cylinder>
+            <radius>0.065</radius>
+            <length>0.024</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name='visual'>
+        <geometry>
+          <cylinder>
+            <radius>0.065</radius>
+            <length>0.024</length>
+          </cylinder>
+        </geometry>
+          <material>
+            <ambient>0.18 0.18 0.2 1</ambient>
+            <diffuse>0.18 0.18 0.2 1</diffuse>
+            <specular>0.55 0.55 0.55 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+      </visual>
+    </link>
+    <link name='ring_brace_1'>
+      <pose>-0.51 0 1.085757 0 -0.809534 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <cylinder>
+            <radius>0.012</radius>
+            <length>0.248631</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name='visual'>
+        <geometry>
+          <cylinder>
+            <radius>0.012</radius>
+            <length>0.248631</length>
+          </cylinder>
+        </geometry>
+          <material>
+            <ambient>0.32 0.33 0.35 1</ambient>
+            <diffuse>0.32 0.33 0.35 1</diffuse>
+            <specular>0.55 0.55 0.55 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+      </visual>
+    </link>
+    <link name='ring_clamp_1'>
+      <pose>-0.47 0 1.191514 1.570796 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <cylinder>
+            <radius>0.03</radius>
+            <length>0.06</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name='visual'>
+        <geometry>
+          <cylinder>
+            <radius>0.03</radius>
+            <length>0.06</length>
+          </cylinder>
+        </geometry>
+          <material>
+            <ambient>0.24 0.24 0.26 1</ambient>
+            <diffuse>0.24 0.24 0.26 1</diffuse>
+            <specular>0.55 0.55 0.55 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+      </visual>
+    </link>
+    <link name='ring_support_2'>
+      <pose>0.42 0 0.5 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <cylinder>
+            <radius>0.018</radius>
+            <length>1</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name='visual'>
+        <geometry>
+          <cylinder>
+            <radius>0.018</radius>
+            <length>1</length>
+          </cylinder>
+        </geometry>
+          <material>
+            <ambient>0.42 0.44 0.46 1</ambient>
+            <diffuse>0.42 0.44 0.46 1</diffuse>
+            <specular>0.55 0.55 0.55 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+      </visual>
+    </link>
+    <link name='ring_support_foot_2'>
+      <pose>0.42 0 0.012 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <cylinder>
+            <radius>0.065</radius>
+            <length>0.024</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name='visual'>
+        <geometry>
+          <cylinder>
+            <radius>0.065</radius>
+            <length>0.024</length>
+          </cylinder>
+        </geometry>
+          <material>
+            <ambient>0.18 0.18 0.2 1</ambient>
+            <diffuse>0.18 0.18 0.2 1</diffuse>
+            <specular>0.55 0.55 0.55 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+      </visual>
+    </link>
+    <link name='ring_brace_2'>
+      <pose>0.51 0 1.085757 0 0.809534 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <cylinder>
+            <radius>0.012</radius>
+            <length>0.248631</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name='visual'>
+        <geometry>
+          <cylinder>
+            <radius>0.012</radius>
+            <length>0.248631</length>
+          </cylinder>
+        </geometry>
+          <material>
+            <ambient>0.32 0.33 0.35 1</ambient>
+            <diffuse>0.32 0.33 0.35 1</diffuse>
+            <specular>0.55 0.55 0.55 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+      </visual>
+    </link>
+    <link name='ring_clamp_2'>
+      <pose>0.47 0 1.191514 1.570796 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <cylinder>
+            <radius>0.03</radius>
+            <length>0.06</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name='visual'>
+        <geometry>
+          <cylinder>
+            <radius>0.03</radius>
+            <length>0.06</length>
+          </cylinder>
+        </geometry>
+          <material>
+            <ambient>0.24 0.24 0.26 1</ambient>
+            <diffuse>0.24 0.24 0.26 1</diffuse>
+            <specular>0.55 0.55 0.55 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

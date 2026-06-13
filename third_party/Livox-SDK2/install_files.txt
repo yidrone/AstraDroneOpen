@@ -1,5 +1,0 @@
-//usr/local/lib/liblivox_lidar_sdk_static.a
-//usr/local/lib/liblivox_lidar_sdk_shared.so
-//usr/local/include/livox_lidar_def.h
-//usr/local/include/livox_lidar_cfg.h
-//usr/local/include/livox_lidar_api.h

@@ -1,0 +1,148 @@
+material CRAIC/TargetTopLeft
+{
+  technique
+  {
+    pass
+    {
+      lighting off
+      texture_unit
+      {
+        texture target_top_left.png
+      }
+    }
+  }
+}
+
+material CRAIC/TargetTopRight
+{
+  technique
+  {
+    pass
+    {
+      lighting off
+      texture_unit
+      {
+        texture target_top_right.png
+      }
+    }
+  }
+}
+
+material CRAIC/TargetBottomLeft
+{
+  technique
+  {
+    pass
+    {
+      lighting off
+      texture_unit
+      {
+        texture target_bottom_left.png
+      }
+    }
+  }
+}
+
+material CRAIC/TargetBottomRight
+{
+  technique
+  {
+    pass
+    {
+      lighting off
+      texture_unit
+      {
+        texture target_bottom_right.png
+      }
+    }
+  }
+}
+
+material CRAIC/SpecialTarget
+{
+  technique
+  {
+    pass
+    {
+      lighting off
+      texture_unit
+      {
+        texture special_target.png
+      }
+    }
+  }
+}
+
+material CRAIC/QRCode
+{
+  technique
+  {
+    pass
+    {
+      lighting off
+      texture_unit
+      {
+        texture qr_placeholder.png
+      }
+    }
+  }
+}
+
+material CRAIC/TakeoffPad
+{
+  technique
+  {
+    pass
+    {
+      lighting off
+      texture_unit
+      {
+        texture takeoff_pad.png
+      }
+    }
+  }
+}
+
+material CRAIC/LandingLeft
+{
+  technique
+  {
+    pass
+    {
+      lighting off
+      texture_unit
+      {
+        texture landing_left.png
+      }
+    }
+  }
+}
+
+material CRAIC/LandingRight
+{
+  technique
+  {
+    pass
+    {
+      lighting off
+      texture_unit
+      {
+        texture landing_right.png
+      }
+    }
+  }
+}
+
+material CRAIC/ZoneOverlay
+{
+  technique
+  {
+    pass
+    {
+      ambient 0.85 0.93 1.0 0.35
+      diffuse 0.85 0.93 1.0 0.35
+      scene_blend alpha_blend
+      depth_write off
+    }
+  }
+}

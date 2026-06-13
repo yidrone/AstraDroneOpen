@@ -107,7 +107,7 @@ def publish_camera_feed():
     # 图像保存参数
     save_images = rospy.get_param('~save_images', False)
     save_frequency = rospy.get_param('~save_frequency', 3.0)
-    save_dir = rospy.get_param('~save_dir', "/home/uav/utils_ws/image")
+    save_dir = rospy.get_param('~save_dir', os.path.expanduser("~/camera_sdk_images"))
     
     # 压缩参数
     jpeg_quality = rospy.get_param('~jpeg_quality', 80)

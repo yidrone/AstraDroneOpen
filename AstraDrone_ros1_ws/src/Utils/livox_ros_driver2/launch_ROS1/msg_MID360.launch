@@ -2,7 +2,7 @@
 
 	<!--user configure parameters for ros start-->
 	<arg name="lvx_file_path" default="livox_test.lvx"/>
-	<arg name="bd_list" default="47MDN1A0030547"/>
+	<arg name="bd_list" default="100000000000000"/>
 	<arg name="xfer_format" default="1"/>
 	<arg name="multi_topic" default="0"/>
 	<arg name="data_src" default="0"/>
@@ -14,7 +14,23 @@
 	<arg name="msg_frame_id" default="livox_frame"/>
 	<arg name="lidar_bag" default="true"/>
 	<arg name="imu_bag" default="true"/>
-	<!--user configure parameters for ros end--> 
+	<!-- NoSync 时间戳模式：
+	     steady_raw   推荐值。NoSync 下用 MID360 包内 raw uint64 ns 上电时间，映射成单调 ROS 时间；
+	                  Jetson 被 NTP/chrony/systemd-timesyncd 校时也不会让 /livox/lidar 或 /livox/imu 时间戳回退。
+	     legacy_system 回滚值。恢复官方原始行为：NoSync 下使用主机系统时间；仅用于 A/B 对比。
+	                  如果系统时间跳变，FAST-LIO 可能出现 lidar/imu loop back、清 buffer、odom 停止。 -->
+	<arg name="nosync_time_mode" default="steady_raw"/>
+	<!-- NoSync 发布切帧模式：
+	     sensor_time  推荐值。按雷达时间累计到 publish_freq 对应跨度后发布一帧；
+	                  可避免系统时间跳变导致 /livox/lidar 停发、追赶式补发、1000Hz 小帧。
+	     legacy_timer 回滚值。恢复官方主机 timer 切帧；仅用于确认问题是否来自新切帧逻辑。 -->
+	<arg name="nosync_publish_mode" default="sensor_time"/>
+	<!-- 小帧过滤阈值：
+	     0            默认值，不按点数丢帧，最大兼容官方行为。
+	     >0           丢弃点数低于该值的点云帧，可过滤异常 tiny frame；阈值过高会误删正常帧。
+	                  建议先 rostopic echo/统计正常 MID360 单帧点数，再设置保守值。 -->
+	<arg name="min_points_per_frame" default="0"/>
+	<!--user configure parameters for ros end-->
 
 	<param name="xfer_format" value="$(arg xfer_format)"/>
 	<param name="multi_topic" value="$(arg multi_topic)"/>
@@ -27,6 +43,9 @@
 	<param name="frame_id" type="string" value="$(arg msg_frame_id)"/>
 	<param name="enable_lidar_bag" type="bool" value="$(arg lidar_bag)"/>
 	<param name="enable_imu_bag" type="bool" value="$(arg imu_bag)"/>
+	<param name="nosync_time_mode" type="string" value="$(arg nosync_time_mode)"/>
+	<param name="nosync_publish_mode" type="string" value="$(arg nosync_publish_mode)"/>
+	<param name="min_points_per_frame" type="int" value="$(arg min_points_per_frame)"/>
 
 	<node name="livox_lidar_publisher2" pkg="livox_ros_driver2"
 	      type="livox_ros_driver2_node" required="true"

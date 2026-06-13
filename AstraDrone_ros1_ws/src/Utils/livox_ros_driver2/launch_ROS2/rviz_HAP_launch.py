@@ -11,7 +11,7 @@ data_src      = 0    # 0-lidar, others-Invalid data src
 publish_freq  = 10.0 # freqency of publish, 5.0, 10.0, 20.0, 50.0, etc.
 output_type   = 0
 frame_id      = 'livox_frame'
-lvx_file_path = '/home/livox/livox_test.lvx'
+lvx_file_path = os.path.expanduser('~/livox_test.lvx')
 cmdline_bd_code = 'livox0000000001'
 
 cur_path = os.path.split(os.path.realpath(__file__))[0] + '/'

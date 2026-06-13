@@ -196,7 +196,11 @@ typedef struct {
   bool extrinsic_enable;
   uint32_t point_num;
   uint8_t data_type;
+  /** 原始 packet 的 time_type，用于发布节拍和 sync/no-sync 单调保护。 */
+  uint8_t timestamp_type;
   uint8_t line_num;
+  /** 原始 uint64 时间戳；NoSync 为 LiDAR 上电 ns，PTP/GPS/gPTP 为同步 ns。 */
+  uint64_t raw_time_stamp;
   uint64_t time_stamp;
   uint64_t point_interval;
   std::vector<uint8_t> raw_data;
