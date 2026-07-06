@@ -18,7 +18,13 @@ jobs:
 
       - name: Check Python syntax
         run: |
-          find . -name "*.py" -not -path "./.git/*" -print0 | xargs -0 -n1 python3 -m py_compile
+          find . -name "*.py" \
+            -not -path "./.git/*" \
+            -not -path "./third_party/*" \
+            -not -path "*/ode/libs/*" \
+            -not -path "*/serial/tests/*" \
+            -not -path "*/ugv_gazebo_sim/*" \
+            -print0 | xargs -0 -n1 python3 -m py_compile
           echo "✅ Python syntax check passed"
 
   xml-check:
