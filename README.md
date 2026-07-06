@@ -60,10 +60,10 @@ AstraDroneOpen/
 │       └── To_Be_Add                # 演示视频将陆续补充
 │
 ├── scripts/                         # 工具与自动化脚本（优先使用 .bin 可执行）
-│   ├── build_AstraDrone_ros1.bin    # ROS1 一键构建（含依赖检查）
-│   ├── build_sim_workspace.bin      # 仿真一键构建
-│   ├── pc_installer.bin             # PC 端环境一键安装器
-│   ├── onboard_installer.bin        # 机载端环境一键安装器
+│   ├── build_AstraDrone_ros1_x86.bin    # ROS1 一键构建（含依赖检查）
+│   ├── build_sim_workspace_x86.bin      # 仿真一键构建
+│   ├── pc_installer_x86.bin             # PC 端环境一键安装器
+│   ├── onboard_installer_x86.bin        # 机载端环境一键安装器
 │   ├── shc.sh                       # shell 可执行封装/加固
 │   ├── env_sh/                      # 环境初始化与依赖管理
 │   │   ├── 00_env_ubuntu_init.sh    # 基础系统/源/工具链
@@ -121,13 +121,13 @@ cd ~/ && git clone https://github.com/yidrone/AstraDroneOpen.git  #配置px4环�
 >
 #### 2.1.2 编译项目
 
-本项目提供了众多编译的脚本，包括`00_env_ubuntu_init.sh`、`01_env_px4_init.sh`、`02_env_third_party_init.sh`为基本环境配置脚本，主要安装了ros noetic，code ，px4 ，编译ros工作空间所需的第三方库。`build_AstraDrone_ros1.bin`、`build_sim_workspace.bin`为工作空间的编译脚本，这两个脚本会删除原有的编译文件，重新编译，所以编译比较费时，推荐在第一次编译时使用。
+本项目提供了众多编译的脚本，包括`00_env_ubuntu_init.sh`、`01_env_px4_init.sh`、`02_env_third_party_init.sh`为基本环境配置脚本，主要安装了ros noetic，code ，px4 ，编译ros工作空间所需的第三方库。`build_AstraDrone_ros1_x86.bin`、`build_sim_workspace_x86.bin`为工作空间的编译脚本，这两个脚本会删除原有的编译文件，重新编译，所以编译比较费时，推荐在第一次编译时使用。
 
 如果是个全新的环境（刚刚装好ubuntu），可以使用一键配置脚本，脚本会顺序执行上述五个脚本，运行之前首先需要检查网络(能连接到Github)：
 
 ```bash 
 cd ~/AstraDroneOpen/ && sudo chmod 777 ~/AstraDroneOpen/scripts/*
-./scripts/pc_installer.bin
+./scripts/pc_installer_x86.bin
 ```
 
 > 如果报错了，请定位到报错的步骤，然后单独运行相应脚本，再定位具体的问题，复制报错内容或者截图，发布issue共同解决或者进群咨询。
@@ -137,7 +137,7 @@ cd ~/AstraDroneOpen/ && sudo chmod 777 ~/AstraDroneOpen/scripts/*
 
 ~~~shell
 cd ~/AstraDroneOpen/AstraDrone_ros1_ws/   #进入工作空间
-./build_AstraDrone_ros1.bin               #编译
+./build_AstraDrone_ros1_x86.bin               #编译
 ~~~
 
 
@@ -165,13 +165,13 @@ cd ~/ && git clone https://github.com/yidrone/AstraDroneOpen.git
 
 #### 2.1.2 编译项目
 
-本项目提供了众多编译的脚本，包括`00_env_ubuntu_init.sh`、`01_env_px4_init.sh`、`02_env_third_party_init.sh`为基本环境配置脚本，主要安装了ros noetic，code ，px4 ，编译ros工作空间所需的第三方库。`build_AstraDrone_ros1.bin`、`build_sim_workspace.bin`为工作空间的编译脚本，这两个脚本会删除原有的编译文件，重新编译，所以编译比较费时，推荐在第一次编译时使用。
+本项目提供了众多编译的脚本，包括`00_env_ubuntu_init.sh`、`01_env_px4_init.sh`、`02_env_third_party_init.sh`为基本环境配置脚本，主要安装了ros noetic，code ，px4 ，编译ros工作空间所需的第三方库。`build_AstraDrone_ros1_x86.bin`、`build_sim_workspace_x86.bin`为工作空间的编译脚本，这两个脚本会删除原有的编译文件，重新编译，所以编译比较费时，推荐在第一次编译时使用。
 
 如果是个全新的环境（刚刚装好ubuntu），可以使用一键配置脚本，脚本会顺序执行上述五个脚本，运行之前首先需要检查网络(能连接到Github)：
 
 ```bash 
 cd ~/AstraDroneOpen/ && sudo chmod 777 ~/AstraDroneOpen/scripts/*
-./scripts/pc_installer.bin
+./scripts/pc_installer_x86.bin
 ```
 
 > 如果报错了，请定位到报错的步骤，然后单独运行相应脚本，再定位具体的问题，复制报错内容或者截图，发布issue共同解决或者进群咨询。
@@ -181,7 +181,7 @@ cd ~/AstraDroneOpen/ && sudo chmod 777 ~/AstraDroneOpen/scripts/*
 
 ~~~shell
 cd ~/AstraDroneOpen/AstraDrone_ros1_ws/   #进入工作空间
-./build_AstraDrone_ros1.bin               #编译
+./build_AstraDrone_ros1_x86.bin               #编译
 ~~~
 
 
@@ -265,16 +265,16 @@ cd ~/AstraDroneOpen/
 
 ### 3.4 脚本介绍
 
-本项目功能包众多，难免会产生功能包重名冲突的情况，为了便于管理多个功能包，使用`CATKIN_IGNORE`文件来忽略工作空间中重名的功能包，所以`build_AstraDrone_ros1.bin`文件可以指定某个功能包不编译，便于开发者对不同算法性能进行对比，目前脚本提供以下功能：
+本项目功能包众多，难免会产生功能包重名冲突的情况，为了便于管理多个功能包，使用`CATKIN_IGNORE`文件来忽略工作空间中重名的功能包，所以`build_AstraDrone_ros1_x86.bin`文件可以指定某个功能包不编译，便于开发者对不同算法性能进行对比，目前脚本提供以下功能：
 
 ##### 2.1.2.1 help标签
 
 会输出加入功能包和排除功能包的基本语法：
 
 ~~~
-astra2@ubuntu:~/AstraDroneOpen$ ./scripts/build_AstraDrone_ros1.bin --help
+astra2@ubuntu:~/AstraDroneOpen$ ./scripts/build_AstraDrone_ros1_x86.bin --help
 扫描包集合目录...
-用法: ./scripts/build_AstraDrone_ros1.bin [选项]
+用法: ./scripts/build_AstraDrone_ros1_x86.bin [选项]
 选项:
   --include <集合>    移除集合目录 CATKIN_IGNORE（启用该集合）。支持 'Set' 或 'Cat/Set'
   --exclude <集合>    在集合目录添加 CATKIN_IGNORE（禁用该集合）。支持 'Set' 或 'Cat/Set'
@@ -283,8 +283,8 @@ astra2@ubuntu:~/AstraDroneOpen$ ./scripts/build_AstraDrone_ros1.bin --help
   --help              显示此帮助信息
 
 示例：
-  ./scripts/build_AstraDrone_ros1.bin --include Fast-Planner --exclude ego-planner
-  ./scripts/build_AstraDrone_ros1.bin --exclude ego-planner
+  ./scripts/build_AstraDrone_ros1_x86.bin --include Fast-Planner --exclude ego-planner
+  ./scripts/build_AstraDrone_ros1_x86.bin --exclude ego-planner
 ~~~
 
 ##### 2.1.2.2 list标签
@@ -292,7 +292,7 @@ astra2@ubuntu:~/AstraDroneOpen$ ./scripts/build_AstraDrone_ros1.bin --help
 可以查看当前项目可用功能包（目前只有ros1版本）：
 
 ~~~
-astra2@ubuntu:~/AstraDroneOpen$ ./scripts/build_AstraDrone_ros1.bin --list
+astra2@ubuntu:~/AstraDroneOpen$ ./scripts/build_AstraDrone_ros1_x86.bin --list
 扫描包集合目录...
 可用集合（两级：类别/集合）：
   Communication/
@@ -312,7 +312,7 @@ astra2@ubuntu:~/AstraDroneOpen$ ./scripts/build_AstraDrone_ros1.bin --list
 查看当前哪些包会编译，哪些包不会编译
 
 ~~~
-astra2@ubuntu:~/AstraDroneOpen$ ./scripts/build_AstraDrone_ros1.bin --state
+astra2@ubuntu:~/AstraDroneOpen$ ./scripts/build_AstraDrone_ros1_x86.bin --state
 扫描包集合目录...
 ====== 当前编译状态（集合级，类别/集合） ======
 将会编译（未发现 CATKIN_IGNORE）的集合：
@@ -335,7 +335,7 @@ astra2@ubuntu:~/AstraDroneOpen$ ./scripts/build_AstraDrone_ros1.bin --state
 通过`include`和`exclude`来控制某个功能包是否编译，注意区分大小写，一个标签后面只能带一个包名。
 
 ~~~
-./scripts/build_AstraDrone_ros1.bin --include Fast-Planner --exclude ego-planner
+./scripts/build_AstraDrone_ros1_x86.bin --include Fast-Planner --exclude ego-planner
 ~~~
 
 #### 

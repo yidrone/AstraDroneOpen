@@ -146,7 +146,7 @@ AstraDrone 采用典型的无人机分层架构：
 进阶功能包括SLAM算法与Planner的必涨规划，以及自主探索等无人机的自主
 
 #### 5.4.1 Fast‑LIO2
-Fast‑LIO2 是一种快速、鲁棒的激光雷达‑惯性里程计算法，采用增量 kd‑Tree (ikd‑Tree) 实现高效的地图更新，支持 100 Hz 以上的激光数据处理，对不同类型 LiDAR 兼容性好，且可以直接基于原始点云进行匹配:contentReference[oaicite:0]{index=0}。使用步骤包括：
+Fast‑LIO2 是一种快速、鲁棒的激光雷达‑惯性里程计算法，采用增量 kd‑Tree (ikd‑Tree) 实现高效的地图更新，支持 100 Hz 以上的激光数据处理，对不同类型 LiDAR 兼容性好，且可以直接基于原始点云进行匹配。使用步骤包括：
 
 1. **编译与环境配置**：将 Fast‑LIO2 ROS 包添加到工作区中，按照其依赖安装和编译说明操作。 
 
@@ -163,7 +163,7 @@ Fast‑LIO2 是一种快速、鲁棒的激光雷达‑惯性里程计算法，�
    ![Odom](gif\Odom.png)
 
 #### 5.4.2 EGO‑Planner
-EGO‑Planner 是一种基于梯度的轻量级局部规划算法，无需构建 ESDF 地图即可生成避障轨迹，规划时间约为 1 ms:contentReference[oaicite:1]{index=1}。使用步骤：
+EGO‑Planner 是一种基于梯度的轻量级局部规划算法，无需构建 ESDF 地图即可生成避障轨迹，规划时间约为 1 ms。使用步骤：
 
 1. **集成 Planner 包**：在 `Planner` 模块中引入 EGO‑Planner 相关代码或配置。 
 2. **启动方式**：在仿真环境中运行相应 launch 文件，确保 SLAM 模块为Planner算法提供位姿和地图信息。 
@@ -251,8 +251,8 @@ EGO‑Planner 是一种基于梯度的轻量级局部规划算法，无需构建
 
 ## 9. 参考资料
 
-- Fast‑LIO2 新特性：增量 kd‑Tree 地图更新，可在 100 Hz 激光率下实时运行，支持多种 LiDAR 类型:contentReference[oaicite:2]{index=2}。 
-- EGO‑Planner 特性：无需 ESDF 构建，规划时间约为 1 ms，适用于实时局部避障:contentReference[oaicite:3]{index=3}。 
+- Fast‑LIO2 新特性：增量 kd‑Tree 地图更新，可在 100 Hz 激光率下实时运行，支持多种 LiDAR 类型。
+- EGO‑Planner 特性：无需 ESDF 构建，规划时间约为 1 ms，适用于实时局部避障。 
 - [PX4 官方文档](https://docs.px4.io/)：飞控固件配置与使用指南。 
 - [ROS Wiki](https://wiki.ros.org/)：ROS 系统介绍和 API 文档。 
 
