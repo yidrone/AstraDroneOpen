@@ -1,0 +1,52 @@
+name: Static Check
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  python-check:
+    name: Python Syntax Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Check Python syntax
+        run: |
+          find . -name "*.py" -not -path "./.git/*" -print0 | xargs -0 -n1 python3 -m py_compile
+          echo "✅ Python syntax check passed"
+
+  xml-check:
+    name: XML/Launch Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install xmllint
+        run: sudo apt-get update && sudo apt-get install -y libxml2-utils
+
+      - name: Check XML syntax
+        run: |
+          find . -name "*.xml" -not -path "./.git/*" -print0 | xargs -0 -n1 xmllint --noout
+          echo "✅ XML syntax check passed"
+
+      - name: Check launch files
+        run: |
+          find . -name "*.launch" -not -path "./.git/*" -print0 | xargs -0 -n1 xmllint --noout
+          echo "✅ Launch file check passed"
+
+  shell-check:
+    name: Shell Script Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check shell syntax
+        run: |
+          find . -name "*.sh" -not -path "./.git/*" -print0 | xargs -0 -n1 bash -n
+          echo "✅ Shell script check passed"
