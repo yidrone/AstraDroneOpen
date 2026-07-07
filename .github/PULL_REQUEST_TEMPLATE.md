@@ -4,8 +4,8 @@
 
 ## 关联 Issue
 
-<!-- 如果有对应的 Issue，请填写 Issue 编号，例如 Fixes #123 -->
-Fixes #
+<!-- 如果有关联 Issue，请填写 Closes #123 / Fixes #123；如果没有，请填写"无"。 -->
+无
 
 ## 修改文件
 
