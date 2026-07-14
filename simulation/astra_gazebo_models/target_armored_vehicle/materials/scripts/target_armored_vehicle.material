@@ -1,0 +1,13 @@
+material Mark/target_armored_vehicle
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture target_armored_vehicle.png
+      }
+    }
+  }
+}
