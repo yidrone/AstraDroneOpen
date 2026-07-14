@@ -1,0 +1,13 @@
+material Mark/target_bridge
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture target_bridge.png
+      }
+    }
+  }
+}
