@@ -1,0 +1,13 @@
+material Mark/target_bunker
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture target_bunker.png
+      }
+    }
+  }
+}
