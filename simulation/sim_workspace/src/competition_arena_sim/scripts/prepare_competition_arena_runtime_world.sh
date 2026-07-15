@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+GENERATOR="${SCRIPT_DIR}/generate_competition_arena_world.py"
+OUTPUT=""
+SEED=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --output)
+      OUTPUT="$2"
+      shift 2
+      ;;
+    --seed)
+      SEED="$2"
+      shift 2
+      ;;
+    *)
+      echo "Unknown argument: $1" >&2
+      exit 1
+      ;;
+  esac
+done
+
+if [[ -z "$OUTPUT" ]]; then
+  echo "--output is required" >&2
+  exit 1
+fi
+
+GEN_ARGS=(--output "$OUTPUT")
+if [[ -n "$SEED" ]]; then
+  GEN_ARGS+=(--seed "$SEED")
+fi
+
+python3 "$GENERATOR" "${GEN_ARGS[@]}" >&2
+printf '%s\n' "$OUTPUT"

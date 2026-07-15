@@ -1,0 +1,30 @@
+<?xml version='1.0'?>
+<sdf version='1.6'>
+  <model name="target_bunker">
+    <static>1</static>
+    <link name='link'>
+      <collision name='collision'>
+        <geometry><box><size>1 1 0.02</size></box></geometry>
+        <surface>
+          <contact><ode/></contact>
+          <bounce/>
+          <friction><torsional><ode/></torsional><ode/></friction>
+        </surface>
+        <max_contacts>10</max_contacts>
+      </collision>
+      <visual name='visual'>
+        <geometry><box><size>1 1 0.02</size></box></geometry>
+        <material>
+          <script>
+            <uri>model://target_bunker/materials/scripts</uri>
+            <uri>model://target_bunker/materials/textures</uri>
+            <name>Mark/target_bunker</name>
+          </script>
+        </material>
+      </visual>
+      <self_collide>0</self_collide>
+      <enable_wind>0</enable_wind>
+      <kinematic>0</kinematic>
+    </link>
+  </model>
+</sdf>

@@ -1,0 +1,13 @@
+material Mark/target_tank
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture target_tank.png
+      }
+    }
+  }
+}
