@@ -1,0 +1,13 @@
+material Mark/target_red_cross
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture target_red_cross.png
+      }
+    }
+  }
+}
