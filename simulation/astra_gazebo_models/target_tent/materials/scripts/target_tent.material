@@ -1,0 +1,13 @@
+material Mark/target_tent
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture target_tent.png
+      }
+    }
+  }
+}

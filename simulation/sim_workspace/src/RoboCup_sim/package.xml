@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>RoboCup_sim</name>
+  <version>0.0.0</version>
+  <description>RoboCup_sim launch files and runtime world randomizer.</description>
+
+  <maintainer email="jm@todo.todo">jm</maintainer>
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <exec_depend>gazebo_ros</exec_depend>
+
+</package>
